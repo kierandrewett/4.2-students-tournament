@@ -1,10 +1,10 @@
 name: Release
 on: [push]
-strategy:
-    matrix:
-        os: [ubuntu-latest, windows-latest]
 jobs:
     build:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
         runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v3
@@ -56,6 +56,9 @@ jobs:
             version: ${{ env.CARGO_VERSION }}
 
     release:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
         needs: [build]
         runs-on: ${{ matrix.os }}
         steps:
