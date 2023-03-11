@@ -101,7 +101,9 @@ jobs:
               run: |
                 echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
                 echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
-                MIME_TYPE=$(file -i target/release/students_tourny | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
+                ARTIFACT_LOCATION=$(pwd)/${{ env.ARTIFACT_UPLOADED_NAME }}
+                echo "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> "$GITHUB_ENV"
+                MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
                 echo "MIME_TYPE=$MIME_TYPE" >> "$GITHUB_ENV"
 
             - name: Create release
@@ -120,7 +122,7 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
                 upload_url: ${{ steps.release.outputs.upload_url }}
-                asset_path: ./${{ env.ARTIFACT_UPLOADED_NAME }}
+                asset_path: ./${{ env.ARTIFACT_LOCATION }}
                 asset_name: ${{ env.ARTIFACT_UPLOADED_NAME }}
                 asset_content_type: ${{ env.MIME_TYPE }}
 
