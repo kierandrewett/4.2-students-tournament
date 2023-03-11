@@ -53,10 +53,10 @@ jobs:
 
             - uses: actions/upload-artifact@v3
               with:
-                name: ${{ env.ARTIFACT_NAME }}
+                name: ${{ env.ARTIFACT_UPLOADED_NAME }}
                 path: target/release/${{ env.BIN_NAME }}
         outputs:
-            artifact_name: ${{ env.ARTIFACT_NAME }}
+            artifact_name: ${{ env.ARTIFACT_UPLOADED_NAME }}
             version: ${{ env.CARGO_VERSION }}
 
     release:
