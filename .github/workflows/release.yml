@@ -43,14 +43,16 @@ jobs:
                 
                 if [ "${{ matrix.os }}" == "windows-latest" ]; then
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME.exe" >> "$GITHUB_ENV"
+                    echo "BIN_NAME=${{ env.CARGO_NAME }}.exe" >> "$GITHUB_ENV"
                 else 
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
+                    echo "BIN_NAME=${{ env.CARGO_NAME }}" >> "$GITHUB_ENV"
                 fi
 
             - uses: actions/upload-artifact@v3
               with:
                 name: ${{ env.ARTIFACT_NAME }}
-                path: target/release/${{ env.CARGO_NAME }}*
+                path: target/release/${{ env.BIN_NAME }}
         outputs:
             artifact_name: ${{ env.ARTIFACT_NAME }}
             version: ${{ env.CARGO_VERSION }}
