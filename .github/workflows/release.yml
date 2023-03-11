@@ -1,0 +1,28 @@
+name: Release
+on: [push]
+jobs:
+    release:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Decide what toolchain to use
+              run: |
+                if [ "$s1" == "$s2" ]; then
+                    echo "RS_TOOLCHAIN=stable-msvc" >> "$GITHUB_ENV"
+                else 
+                    echo "RS_TOOLCHAIN=stable" >> "$GITHUB_ENV"
+                fi
+
+            - uses: actions-rs/toolchain@v1
+              with:
+                profile: minimal
+                toolchain: ${{ env.RS_TOOLCHAIN }}
+                override: true
+
+            - uses: actions-rs/cargo@v1
+              with:
+                command: build --release
