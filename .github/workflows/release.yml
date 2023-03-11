@@ -18,11 +18,6 @@ jobs:
                     echo "RS_TOOLCHAIN=stable" >> "$GITHUB_ENV"
                 fi
 
-            - name: Install dependencies
-              shell: bash
-              run: |
-                cargo install cargo-get
-
             - uses: actions-rs/toolchain@v1
               with:
                 profile: minimal
@@ -37,8 +32,8 @@ jobs:
             - name: Determine artifact name
               shell: bash
               run: |
-                echo "CARGO_NAME=$(cargo-get -n)" >> "$GITHUB_ENV"
-                echo "ARTIFACT_NAME=$(cargo-get -n)-$(cargo-get version)-$(./contrib/config.guess)" >> "$GITHUB_ENV"
+                echo "CARGO_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")" >> "$GITHUB_ENV"
+                echo "ARTIFACT_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")-$(cat Cargo.toml | tomlq -r ".package.version")-$(./contrib/config.guess)" >> "$GITHUB_ENV"
 
             - uses: actions/upload-artifact@v3
               with:
