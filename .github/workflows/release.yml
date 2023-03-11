@@ -43,6 +43,8 @@ jobs:
                 echo "CARGO_VERSION=$CARGO_VERSION" >> "$GITHUB_ENV"
                 ARTIFACT_NAME="$CARGO_NAME-$CARGO_VERSION-$(./contrib/config.guess)"
                 
+                echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
+
                 if [ "${{ matrix.os }}" == "windows-latest" ]; then
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME.exe" >> "$GITHUB_ENV"
                     echo "BIN_NAME=$CARGO_NAME.exe" >> "$GITHUB_ENV"
@@ -56,7 +58,7 @@ jobs:
                 name: ${{ env.ARTIFACT_UPLOADED_NAME }}
                 path: target/release/${{ env.BIN_NAME }}
         outputs:
-            artifact_name: ${{ env.ARTIFACT_UPLOADED_NAME }}
+            artifact_name: ${{ env.ARTIFACT_NAME }}
             version: ${{ env.CARGO_VERSION }}
 
     release:
@@ -66,9 +68,18 @@ jobs:
         needs: [build]
         runs-on: ${{ matrix.os }}
         steps:
+            - name: Get artifact name
+              shell: bash
+              run: |
+                if [ "${{ matrix.os }}" == "windows-latest" ]; then
+                    echo "ARTIFACT_UPLOADED_NAME=${{ needs.build.outputs.artifact_name }}.exe" >> "$GITHUB_ENV"
+                else 
+                    echo "ARTIFACT_UPLOADED_NAME=${{ needs.build.outputs.artifact_name }}" >> "$GITHUB_ENV"
+                fi
+
             - uses: actions/download-artifact@v3
               with:
-                name: ${{ needs.build.outputs.artifact_name }}
+                name: ${{ env.ARTIFACT_UPLOADED_NAME }}
 
             - name: Get release details
               run: |
