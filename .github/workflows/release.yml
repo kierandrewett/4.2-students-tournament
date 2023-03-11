@@ -105,6 +105,7 @@ jobs:
                 echo "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> "$GITHUB_ENV"
                 MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
                 echo "MIME_TYPE=$MIME_TYPE" >> "$GITHUB_ENV"
+                ls
 
             - name: Create release
               id: release
