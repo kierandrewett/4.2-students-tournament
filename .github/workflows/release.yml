@@ -38,7 +38,14 @@ jobs:
               shell: bash
               run: |
                 echo "CARGO_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")" >> "$GITHUB_ENV"
-                echo "ARTIFACT_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")-$(cat Cargo.toml | tomlq -r ".package.version")-$(./contrib/config.guess)" >> "$GITHUB_ENV"
+                ARTIFACT_NAME="$(cat Cargo.toml | tomlq -r ".bin[0].name")-$(cat Cargo.toml | tomlq -r ".package.version")-$(./contrib/config.guess)"
+                
+                if [ "${{ matrix.os }}" == "windows-latest" ]; then
+                    echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME.exe" >> "$GITHUB_ENV"
+                else 
+                    echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
+                fi
+                
 
             - uses: actions/upload-artifact@v3
               with:
