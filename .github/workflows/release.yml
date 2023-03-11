@@ -101,6 +101,7 @@ jobs:
               run: |
                 echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
                 echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
+                pwd
 
             - name: Release
               id: release
@@ -109,7 +110,7 @@ jobs:
                 tag: ${{ github.sha }}
                 name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
                 body: "Build artifacts"
-                artifacts: ${{ env.ARTIFACT_UPLOADED_NAME }}
+                artifacts: "${{ env.ARTIFACT_UPLOADED_NAME }}"
                 draft: true
         outputs:
             id: ${{ steps.release.outputs.id }}
@@ -117,7 +118,10 @@ jobs:
     publish:
         needs: [release]
         runs-on: ubuntu-latest
+        permissions: write-all
         steps:
             - uses: eregon/publish-release@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                release_id: ${{ needs.release.outputs.id }}
+                release_id: ${{ needs.release.outputs.id }
