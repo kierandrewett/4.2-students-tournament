@@ -68,6 +68,8 @@ jobs:
         needs: [build]
         runs-on: ${{ matrix.os }}
         steps:
+            - uses: actions/checkout@v3
+
             - name: Determine artifact name
               shell: bash
               run: |
