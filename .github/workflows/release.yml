@@ -101,17 +101,24 @@ jobs:
               run: |
                 echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
                 echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
-                pwd
+                echo "MIME_TYPE=$(file -i target/release/students_tourny | python -c \"import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])\")" >> "$GITHUB_ENV"
 
-            - name: Release
+            - name: Create release
               id: release
-              uses: ncipollo/release-action@v1
+              uses: actions/create-release@v1
               with:
-                tag: ${{ github.sha }}
-                name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
-                body: "Build artifacts"
-                artifacts: "${{ env.ARTIFACT_UPLOADED_NAME }}"
+                tag_name: ${{ github.sha }}
+                release_name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
                 draft: true
+                prerelease: false
+
+            - uses: actions/upload-release-asset@v1.0.1
+              with:
+                upload_url: ${{ steps.release.outputs.upload_url }}
+                asset_path: ./${{ env.ARTIFACT_UPLOADED_NAME }}
+                asset_name: ${{ env.ARTIFACT_UPLOADED_NAME }}
+                asset_content_type: ${{ env.MIME_TYPE }}
+                
         outputs:
             id: ${{ steps.release.outputs.id }}
 
