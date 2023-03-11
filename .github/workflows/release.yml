@@ -1,7 +1,7 @@
 name: Release
 on: [push]
 jobs:
-    release:
+    build:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest]
@@ -9,7 +9,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            - name: Decide what toolchain to use
+            - name: Configure build toolchains
               shell: bash
               run: |
                 if [ "${{ matrix.os }}" == "windows-latest" ]; then
@@ -17,6 +17,11 @@ jobs:
                 else 
                     echo "RS_TOOLCHAIN=stable" >> "$GITHUB_ENV"
                 fi
+
+            - name: Install dependencies
+              shell: bash
+              run: |
+                cargo install cargo-get
 
             - uses: actions-rs/toolchain@v1
               with:
@@ -28,3 +33,14 @@ jobs:
               with:
                 command: build
                 args: --release
+
+            - name: Determine artifact name
+              shell: bash
+              run: |
+                echo "CARGO_NAME=$(cargo-get -n)" >> "$GITHUB_ENV"
+                echo "ARTIFACT_NAME=$(cargo-get -n)-$(cargo-get version)-$(./contrib/config.guess)" >> "$GITHUB_ENV"
+
+            - uses: actions/upload-artifact@v3
+              with:
+                name: ${{ env.ARTIFACT_NAME }}
+                path: target/release/${{ env.CARGO_NAME }}
