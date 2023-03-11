@@ -37,16 +37,18 @@ jobs:
             - name: Determine artifact name
               shell: bash
               run: |
-                echo "CARGO_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")" >> "$GITHUB_ENV"
-                echo "CARGO_VERSION=$(cat Cargo.toml | tomlq -r ".package.version")" >> "$GITHUB_ENV"
-                ARTIFACT_NAME="$(cat Cargo.toml | tomlq -r ".bin[0].name")-$(cat Cargo.toml | tomlq -r ".package.version")-$(./contrib/config.guess)"
+                CARGO_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")
+                CARGO_VERSION=$(cat Cargo.toml | tomlq -r ".package.version")
+                echo "CARGO_NAME=$CARGO_NAME" >> "$GITHUB_ENV"
+                echo "CARGO_VERSION=$CARGO_VERSION" >> "$GITHUB_ENV"
+                ARTIFACT_NAME="$CARGO_NAME-$CARGO_VERSION-$(./contrib/config.guess)"
                 
                 if [ "${{ matrix.os }}" == "windows-latest" ]; then
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME.exe" >> "$GITHUB_ENV"
-                    echo "BIN_NAME=${{ env.CARGO_NAME }}.exe" >> "$GITHUB_ENV"
+                    echo "BIN_NAME=$CARGO_NAME.exe" >> "$GITHUB_ENV"
                 else 
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
-                    echo "BIN_NAME=${{ env.CARGO_NAME }}" >> "$GITHUB_ENV"
+                    echo "BIN_NAME=$CARGO_NAME" >> "$GITHUB_ENV"
                 fi
 
             - uses: actions/upload-artifact@v3
