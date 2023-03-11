@@ -18,6 +18,11 @@ jobs:
                     echo "RS_TOOLCHAIN=stable" >> "$GITHUB_ENV"
                 fi
 
+            - name: Install dependencies
+              shell: bash
+              run: |
+                pip install yq
+
             - uses: actions-rs/toolchain@v1
               with:
                 profile: minimal
