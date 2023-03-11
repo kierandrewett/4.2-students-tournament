@@ -11,7 +11,7 @@ jobs:
 
             - name: Decide what toolchain to use
               run: |
-                if [ "$s1" == "$s2" ]; then
+                if [ "${{ matrix.os }}" == "windows-latest" ]; then
                     echo "RS_TOOLCHAIN=stable-msvc" >> "$GITHUB_ENV"
                 else 
                     echo "RS_TOOLCHAIN=stable" >> "$GITHUB_ENV"
