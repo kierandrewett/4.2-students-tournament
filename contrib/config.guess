@@ -918,10 +918,10 @@ EOF
 	GUESS=$UNAME_MACHINE-pc-cygwin
 	;;
     *:MINGW64*:*)
-	GUESS=$UNAME_MACHINE-pc-mingw64
+	GUESS=$UNAME_MACHINE-pc-windows
 	;;
     *:MINGW*:*)
-	GUESS=$UNAME_MACHINE-pc-mingw32
+	GUESS=$UNAME_MACHINE-pc-windows
 	;;
     *:MSYS*:*)
 	GUESS=$UNAME_MACHINE-pc-msys
