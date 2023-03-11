@@ -108,7 +108,7 @@ jobs:
                 tag: ${{ github.sha }}
                 name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
                 body: "Build artifacts"
-                artifacts: ${{ needs.build.outputs.artifact_name }}
+                artifacts: ${{ env.ARTIFACT_UPLOADED_NAME }}
                 draft: true
         outputs:
             id: ${{ steps.release.outputs.id }}
