@@ -70,6 +70,11 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
+            - name: Install dependencies
+              shell: bash
+              run: |
+                pip install yq
+
             - name: Determine artifact name
               shell: bash
               run: |
