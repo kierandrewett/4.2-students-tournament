@@ -1,10 +1,10 @@
 name: Release
 on: [push]
+strategy:
+    matrix:
+        os: [ubuntu-latest, windows-latest]
 jobs:
     build:
-        strategy:
-            matrix:
-                os: [ubuntu-latest, windows-latest]
         runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v3
@@ -38,6 +38,7 @@ jobs:
               shell: bash
               run: |
                 echo "CARGO_NAME=$(cat Cargo.toml | tomlq -r ".bin[0].name")" >> "$GITHUB_ENV"
+                echo "CARGO_VERSION=$(cat Cargo.toml | tomlq -r ".package.version")" >> "$GITHUB_ENV"
                 ARTIFACT_NAME="$(cat Cargo.toml | tomlq -r ".bin[0].name")-$(cat Cargo.toml | tomlq -r ".package.version")-$(./contrib/config.guess)"
                 
                 if [ "${{ matrix.os }}" == "windows-latest" ]; then
@@ -45,9 +46,44 @@ jobs:
                 else 
                     echo "ARTIFACT_UPLOADED_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
                 fi
-                
 
             - uses: actions/upload-artifact@v3
               with:
                 name: ${{ env.ARTIFACT_NAME }}
                 path: target/release/${{ env.CARGO_NAME }}*
+        outputs:
+            artifact_name: ${{ env.ARTIFACT_NAME }}
+            version: ${{ env.CARGO_VERSION }}
+
+    release:
+        needs: [build]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/download-artifact@v3
+              with:
+                name: ${{ needs.build.outputs.artifact_name }}
+
+            - name: Get release details
+              run: |
+                echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+                echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
+
+            - name: Release
+              id: release
+              uses: ncipollo/release-action@v1
+              with:
+                tag: ${{ github.sha }}
+                name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
+                body: "Build artifacts"
+                artifacts: ${{ needs.build.outputs.artifact_name }}
+                draft: true
+        outputs:
+            id: ${{ steps.release.outputs.id }}
+
+    publish:
+        needs: [release]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: eregon/publish-release@v1
+              with:
+                release_id: ${{ needs.release.outputs.id }}
