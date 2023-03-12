@@ -101,6 +101,7 @@ jobs:
 
             - name: Get release details
               shell: bash
+              if: matrix.os == "ubuntu-latest"
               run: |
                 echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
                 echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
@@ -108,6 +109,17 @@ jobs:
                 echo "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> "$GITHUB_ENV"
                 MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
                 echo "MIME_TYPE=$MIME_TYPE" >> "$GITHUB_ENV"
+
+            - name: Get release details
+              if: matrix.os == "windows-latest"
+              run: |
+                "SHORT_SHA=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
+                "CURR_DATE=$(date +"%d/%m/%Y")" >> $env:GITHUB_ENV
+                New-Variable -Name "ARTIFACT_LOCATION" -Visibility Public -Value 26
+                ARTIFACT_LOCATION=$(pwd)/${{ env.BIN_NAME }}
+                "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> $env:GITHUB_ENV
+                MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
+                "MIME_TYPE=$MIME_TYPE" >> $env:GITHUB_ENV
 
             - name: Create release
               id: release
