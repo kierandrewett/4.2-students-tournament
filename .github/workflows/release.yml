@@ -61,11 +61,35 @@ jobs:
             artifact_name: ${{ env.ARTIFACT_NAME }}
             version: ${{ env.CARGO_VERSION }}
 
+    create-release:
+        needs: [build]
+        runs-on: ubuntu-latest
+        permissions: write-all
+        steps:
+            - name: Get release details
+              shell: bash
+              run: |
+                echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+                echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
+
+            - name: Create release
+              id: release
+              uses: actions/create-release@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                tag_name: ${{ env.CURR_DATE }}-${{ env.SHORT_SHA }}
+                release_name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
+                draft: false
+                prerelease: false
+        outputs:
+            upload_url: ${{ steps.release.outputs.upload_url }}
+
     release:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest]
-        needs: [build]
+        needs: [create-release, build]
         runs-on: ${{ matrix.os }}
         permissions: write-all
         steps:
@@ -103,8 +127,6 @@ jobs:
               shell: bash
               if: matrix.os == 'ubuntu-latest'
               run: |
-                echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-                echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
                 ARTIFACT_LOCATION=$(pwd)/${{ env.BIN_NAME }}
                 echo "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> "$GITHUB_ENV"
                 MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
@@ -114,44 +136,17 @@ jobs:
               shell: bash
               if: matrix.os == 'windows-latest'
               run: |
-                echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-                echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
                 ARTIFACT_LOCATION_UNIX=$(pwd)/${{ env.BIN_NAME }}
                 ARTIFACT_LOCATION=$(echo $ARTIFACT_LOCATION_UNIX | sed 's/\/d\//d:\\\\/g' | sed 's/\//\\/g')
                 echo "ARTIFACT_LOCATION=$ARTIFACT_LOCATION" >> "$GITHUB_ENV"
                 MIME_TYPE=$(file -i $ARTIFACT_LOCATION | python -c "import sys;print(sys.stdin.read().split(': ')[1].split('; ')[0])")
                 echo "MIME_TYPE=$MIME_TYPE" >> "$GITHUB_ENV"
 
-            - name: Create release
-              id: release
-              uses: actions/create-release@v1
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                tag_name: ${{ env.CURR_DATE }}-${{ env.SHORT_SHA }}
-                release_name: "Release ${{ env.CURR_DATE }} (${{ env.SHORT_SHA }})"
-                draft: true
-                prerelease: false
-
             - uses: actions/upload-release-asset@v1.0.1
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                upload_url: ${{ steps.release.outputs.upload_url }}
+                upload_url: ${{ needs.release.outputs.upload_url }}
                 asset_path: ${{ env.ARTIFACT_LOCATION }}
                 asset_name: ${{ env.ARTIFACT_UPLOADED_NAME }}
                 asset_content_type: ${{ env.MIME_TYPE }}
-
-        outputs:
-            id: ${{ steps.release.outputs.id }}
-
-    publish:
-        needs: [release]
-        runs-on: ubuntu-latest
-        permissions: write-all
-        steps:
-            - uses: eregon/publish-release@v1
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                release_id: ${{ needs.release.outputs.id }}
