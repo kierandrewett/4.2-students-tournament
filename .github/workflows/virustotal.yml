@@ -1,0 +1,37 @@
+name: VirusTotal
+on:
+    release:
+        types: [published, created]
+jobs:
+    virustotal:
+        runs-on: ubuntu-latest
+        permissions: write-all
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Install VirusTotal CLI
+              run: |
+                  wget https://github.com/VirusTotal/vt-cli/releases/download/0.13.0/Linux64.zip
+                  unzip Linux64.zip
+                  mv ./vt /usr/local/bin/vt
+                  rm Linux64.zip
+
+            - name: Download all assets from release
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  mkdir -p /assets
+                  cd /assets
+                  gh release download ${{ github.event.release.tag_name }} --pattern "*" -R ${{ github.repository }}
+
+            - name: Run VirusTotal
+              env:
+                  VT_TOKEN: ${{ secrets.VT_TOKEN }}
+              run: |
+                  python3 .github/workflows/virustotal.py /assets
+
+            - name: Commit and push
+              run: |
+                  git add README.md
+                  git commit -m "🤓 Update VirusTotal information"
+                  git push origin main
