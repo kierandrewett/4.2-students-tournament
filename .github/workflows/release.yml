@@ -101,7 +101,7 @@ jobs:
 
             - name: Get release details
               shell: bash
-              if: matrix.os == "ubuntu-latest"
+              if: matrix.os == 'ubuntu-latest'
               run: |
                 echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
                 echo "CURR_DATE=$(date +"%d/%m/%Y")" >> "$GITHUB_ENV"
@@ -111,7 +111,7 @@ jobs:
                 echo "MIME_TYPE=$MIME_TYPE" >> "$GITHUB_ENV"
 
             - name: Get release details
-              if: matrix.os == "windows-latest"
+              if: matrix.os == 'windows-latest'
               run: |
                 "SHORT_SHA=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
                 "CURR_DATE=$(date +"%d/%m/%Y")" >> $env:GITHUB_ENV
