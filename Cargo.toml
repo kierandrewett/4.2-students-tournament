@@ -6,7 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+adw = { version = "0.3.1", package = "libadwaita", features = ["gtk_v4_6"] }
+directories = "4.0.1"
+glib = "0.17.5"
+gtk4 = { version = "0.6.2", features = ["v4_8"] }
+sqlite = "0.30.4"
 
 [[bin]]
 name = "students_tourny"
-path = "src/rust/main.rs"
+path = "src/main.rs"
+
+[build-dependencies]
+glib-build-tools = "0.17.0"
