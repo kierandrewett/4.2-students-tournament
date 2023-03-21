@@ -1,0 +1,46 @@
+MAIN FUNCTION:
+    LOOP 1 TO 10:
+        NAME = INPUT "Please enter event name"
+        TYPE = INPUT "Please enter event category, either individual or team"
+        ADD NAME AND TYPE TO EVENTS LIST
+
+    LOOP 1 TO 5:
+        NAME = INPUT "Please enter team name"
+        ADD NAME TO TEAMS LIST
+
+    WHILE TRUE:
+        PRINT "Enter individuals name or type done to continue to team assignment"
+
+        RESULT = INPUT "Please enter individuals name"
+
+        IF RESULT IS DONE:
+            STOP LOOP
+        ELSE:
+            TYPE = INPUT "Is this individual participating alone or in a team?"
+
+            IF TYPE IS INDIVIDUAL:
+                ADD RESULT TO INDIVIDUALS LIST
+            OR IF TYPE IS TEAM:
+                TEAMNAME = INPUT "Enter the team name to add individual to"
+                ADD RESULT AND TEAMNAME TO TEAM MEMBERS LIST
+
+            EVENT PARTICIPATING = INPUT "What event are you participating in?"
+
+            ADD RESULT AND EVENT PARTICIPATING TO EVENTS MEMBERS LIST 
+
+    WHILE TRUE:
+        LOOP OVER EVENTS LIST:
+            IF EVENT TYPE IS INDIVIDUAL:
+                LOOP 1 TO 20:
+                    PRINT "{index} position"
+
+                    NAME = INPUT "Who placed in this position?"
+
+                    ADD INDEX AND NAME TO RANKINGS
+            OR IF EVENT TYPE IS TEAM:
+                LOOP 1 TO 4:
+                    PRINT "{index} position"
+
+                    NAME = INPUT "Who placed in this position?"
+
+                    ADD INDEX AND NAME TO RANKINGS
