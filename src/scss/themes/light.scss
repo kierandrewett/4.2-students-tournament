@@ -1,0 +1,15 @@
+:root:not(.light),
+:root.light {
+	--base-background: rgb(255, 255, 255);
+	--base-colour: rgb(44, 44, 44);
+
+	--primary: rgb(53, 132, 228);
+	--primary-lighter: rgb(57, 142, 246);
+	--primary-darker: rgb(53, 122, 206);
+
+	--secondary: rgb(230, 230, 230);
+	--secondary-dark: rgb(219, 217, 217);
+	--secondary-darker: rgb(193, 193, 193);
+
+	--warning: rgb(200, 93, 0);
+}

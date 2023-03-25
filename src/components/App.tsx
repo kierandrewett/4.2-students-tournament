@@ -1,10 +1,14 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { Route, Routes } from "react-router-dom";
+
+import Main from "../screens";
+import Intro from "../screens/intro";
 
 const App = () => {
 	return (
-		<div className="container">
-			<h1>Tournament Management Console</h1>
-		</div>
+		<Routes>
+			<Route path={"/intro"} element={<Intro />} />
+			<Route path={"/"} element={<Main />} />
+		</Routes>
 	);
 };
 

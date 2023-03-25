@@ -67,6 +67,7 @@ video {
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	text-size-adjust: none;
+	cursor: default;
 }
 
 footer,
@@ -79,6 +80,7 @@ main {
 
 body {
 	line-height: 1;
+	-webkit-user-select: none;
 }
 
 ol,

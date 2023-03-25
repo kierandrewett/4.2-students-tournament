@@ -16,6 +16,9 @@
             "shell": {
                 "all": false,
                 "open": true
+            },
+            "dialog": {
+                "all": true
             }
         },
         "bundle": {
@@ -42,7 +45,8 @@
                 "resizable": true,
                 "title": "Students Tournament",
                 "width": 1100,
-                "height": 600
+                "height": 600,
+                "visible": false
             }
         ]
     }

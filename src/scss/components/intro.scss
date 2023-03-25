@@ -1,0 +1,20 @@
+.intro-container {
+	padding-block: 2rem;
+}
+
+.intro-container .intro-main button {
+	margin-block: 1.5rem;
+}
+
+.admin-info-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+}
+
+.admin-info-container small {
+	color: var(--warning);
+	font-weight: 500;
+}
