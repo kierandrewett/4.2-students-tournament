@@ -1,4 +1,6 @@
-# 4.2 Students tournament application
+<img src="https://raw.githubusercontent.com/EnderDev/4.2-students-tournament/main/mockups/Reference%20Logo.png" width="100">
+
+# 4.2 Students Tournament
 
 Written using Tauri as the desktop framework and React for the frontend.
 
