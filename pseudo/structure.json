@@ -1,0 +1,50 @@
+{
+    "participants": [
+        {
+            "id": 1,
+            "full_name": "Emily Crawford",
+            "competing_as": "team"
+        },
+        {
+            "id": 2,
+            "full_name": "Benjamin Peterson",
+            "competing_as": "individual"
+        },
+        {
+            "id": 3,
+            "full_name": "Grace Collins",
+            "competing_as": "individual"
+        },
+        {
+            "id": 4,
+            "full_name": "Ethan Watson",
+            "competing_as": "team"
+        }
+    ],
+    "events": [
+        {
+            "id": 1,
+            "name": "",
+            "type": "individual",
+            "points_algorithm": {
+                "first_place_prize": 20
+            }
+        }
+    ],
+    "teams": [
+        {
+            "id": 1,
+            "name": "Thunderbolts",
+            "member_ids": [
+                1
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Red Dragons",
+            "member_ids": [
+                4
+            ]
+        }
+    ]
+}

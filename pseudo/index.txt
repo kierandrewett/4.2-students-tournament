@@ -1,4 +1,4 @@
-# My psuedoiest attempt to write pseudo code
+# My pseudoiest attempt to write pseudo code
 
 MAIN FUNCTION:
     LOOP 1 TO 10:
