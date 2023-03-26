@@ -1,10 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![feature(fn_traits)]
 
-use std::{thread::sleep, time::Duration, path::PathBuf};
+use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}};
 
-use store::events::EventsStore;
-use tauri::{App, Manager, Window, api::path::home_dir};
-use tauri_plugin_store::StoreBuilder;
+use tauri::{App, Manager, Window};
 
 mod store;
 
@@ -30,14 +29,9 @@ fn setup_application(application: &mut App) {
         window.close_devtools();
     }
 
-    // Starts up the data store for the whole appliaction
-    let mut stores = store::init(application);
+    let stores = Arc::new(Mutex::new(store::init(application)));
 
-    stores.events.create_event("hi");
-
-    application.listen_global("store.events.create_event", |event| {
-        // todo
-    });
+    application.manage(stores.clone());
 
     // Spawns an async runtime so we can delay the showing of the window to avoid flickering when loading
     tauri::async_runtime::spawn(async move {
@@ -45,9 +39,11 @@ fn setup_application(application: &mut App) {
         sleep(Duration::from_millis(500));
         window.show().expect("Failed to show Tauri window");
 
-        window.eval("alert(
-            'Some essential information is missing. Participants will not be able to enter information at this time.'
-        );").expect("Failed to open alert");
+        if stores.lock().unwrap().events.get_all_events().len() == 0 {
+            window.eval("alert(
+                'Some essential information is missing. Participants will not be able to enter information at this time.'
+            );").expect("Failed to open alert");
+        }
     });
 }
 
@@ -65,7 +61,10 @@ fn main() {
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![
             greet,
-            open_devtools
+            open_devtools,
+            /* IPC Events */
+            store::events::ipc::events__create_event,
+            store::events::ipc::events__get_all_events
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())
