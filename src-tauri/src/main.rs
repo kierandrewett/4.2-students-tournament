@@ -31,9 +31,9 @@ fn setup_application(application: &mut App) {
     }
 
     // Starts up the data store for the whole appliaction
-    let stores = store::init(application);
+    let mut stores = store::init(application);
 
-    let events_store = stores.events.create_event("hi");
+    stores.events.create_event("hi");
 
     // Spawns an async runtime so we can delay the showing of the window to avoid flickering when loading
     tauri::async_runtime::spawn(async move {

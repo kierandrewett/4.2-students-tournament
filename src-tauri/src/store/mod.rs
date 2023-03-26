@@ -14,22 +14,24 @@ fn get_data_dir() -> PathBuf {
 }
 
 fn init_events_store(application: &App) -> Store<Wry> {
-    let store = StoreBuilder::new(
+    let mut store = StoreBuilder::new(
         application.handle(), 
         get_data_dir().join(PathBuf::from("events.store.json"))
     ).build();
 
+    store.load().expect("Failed to load events store");
     store.save().expect("Failed to save events store");
 
     store
 }
 
 fn init_teams_store(application: &App) -> Store<Wry> {
-    let store = StoreBuilder::new(
+    let mut store = StoreBuilder::new(
         application.handle(), 
         get_data_dir().join(PathBuf::from("teams.store.json"))
     ).build();
 
+    store.load().expect("Failed to load teams store");
     store.save().expect("Failed to save teams store");
 
     store
