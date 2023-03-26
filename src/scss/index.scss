@@ -11,13 +11,14 @@
 @import "components/headerbar";
 @import "components/icons";
 @import "components/sidebar";
+@import "components/table";
 
 html,
 body,
 #app {
 	width: 100%;
 	height: 100vh;
-	overflow: clip;
+	overflow: hidden;
 
 	background-color: var(--base-background);
 	color: var(--base-colour);

@@ -4,10 +4,15 @@
 
 .admin-container {
 	padding: 0 2.75rem;
+	overflow: scroll;
 }
 
 .admin-container,
 .admin-main {
 	justify-content: flex-start;
 	align-items: flex-start;
+}
+
+.admin-container .admin-main:last-child {
+	margin-bottom: 4rem;
 }
