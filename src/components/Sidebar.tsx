@@ -32,6 +32,7 @@ const Sidebar = ({
 				<div className={"sidebar-items"}>
 					{tabs.map((t) => (
 						<button
+							key={t.id}
 							className={"btn secondary"}
 							data-selected={visible == t.id}
 							onClick={() => setVisible(t.id)}
@@ -48,7 +49,7 @@ const Sidebar = ({
 				{tabs.map((t) => {
 					const jsx = t.render();
 
-					return React.cloneElement(jsx, { "data-visible": visible == t.id });
+					return React.cloneElement(jsx, { key: t.id, "data-visible": visible == t.id });
 				})}
 			</main>
 		</aside>
