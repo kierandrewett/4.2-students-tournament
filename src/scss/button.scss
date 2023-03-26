@@ -9,6 +9,11 @@ button {
 	width: -webkit-fit-content;
 }
 
+button[disabled] {
+	opacity: 0.4;
+	pointer-events: none;
+}
+
 button.primary {
 	background-color: var(--primary);
 	color: rgb(255, 255, 255);

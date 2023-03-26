@@ -217,6 +217,11 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@dothq/id@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@dothq/id/-/id-1.0.1.tgz#353e4ccefe7e7a3f3528c0888a456b944671c9a7"
+  integrity sha512-UFBWgzCNUsyVE3cTQUKs1glWLATlScUrDkLNmAxU7Fsmx056u4wIM75sPmRc5sxiFkd1UflgVurDJv70soS7qQ==
+
 "@ekwoka/hotkeys@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@ekwoka/hotkeys/-/hotkeys-1.0.1.tgz#9d91285f831a48952aceddb2407908e4268b9740"

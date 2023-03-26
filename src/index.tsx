@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import App from "./components/App";
 import { registerKeybinds } from "./keybinds";
+import * as tmStore from "./store";
 
 // Imports the styling into the frontend
 import "./scss/index.scss";
@@ -18,3 +19,6 @@ root.render(
 
 // Registers any keybind handlers we might have
 registerKeybinds();
+
+// Expose the IPCStore to the window
+window.store = tmStore.store;
