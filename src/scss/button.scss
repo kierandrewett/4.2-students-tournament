@@ -1,42 +1,65 @@
 button {
 	appearance: none;
+	padding: 0;
+	display: flex;
+	border: none;
+	background-color: unset;
+	transition: 0.1s background-color ease-out;
+}
+
+button.btn.primary,
+button.btn.secondary {
+	appearance: none;
 	padding: 0.8rem 2.2rem;
 	font-size: 1rem;
 	font-weight: 600;
 	border: none;
 	border-radius: 999px;
-	transition: 0.1s background-color ease-out;
 	width: -webkit-fit-content;
 }
 
-button[disabled] {
+button.btn[disabled] {
 	opacity: 0.4;
 	pointer-events: none;
 }
 
-button.primary {
+button.btn.primary {
 	background-color: var(--primary);
 	color: rgb(255, 255, 255);
 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button.primary:hover {
+button.btn.primary:hover {
 	background-color: var(--primary-lighter);
 }
 
-button.primary:active {
+button.btn.primary:active {
 	background-color: var(--primary-darker);
 }
 
-button.secondary {
+button.btn.secondary {
 	background-color: var(--secondary);
 	color: var(--base-text);
 }
 
-button.secondary:hover {
+button.btn.secondary:hover {
 	background-color: var(--secondary-dark);
 }
 
-button.secondary:active {
+button.btn.secondary:active {
 	background-color: var(--secondary-darker);
+}
+
+button.btn.is-icon {
+	border-radius: 999px;
+	background-color: transparent;
+	color: var(--base-text);
+}
+
+button.btn.is-icon:hover {
+	background-color: var(--secondary);
+}
+
+button.btn.is-icon:active {
+	background-color: var(--secondary-dark);
 }

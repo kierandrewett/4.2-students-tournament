@@ -1,0 +1,30 @@
+.header-bar {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	padding: 0.5rem;
+	max-height: 56px;
+}
+
+.header-bar-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.header-bar-container > * {
+	flex: 1 1 0%;
+}
+
+.header-bar-container .header-bar-button-container {
+}
+
+.header-bar-container .header-bar-title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	font-weight: 600;
+}

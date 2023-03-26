@@ -1,3 +1,13 @@
+.admin-container:not([data-visible="true"]) {
+	display: none;
+}
+
 .admin-container {
-	padding-block: 2rem;
+	padding: 0 2.75rem;
+}
+
+.admin-container,
+.admin-main {
+	justify-content: flex-start;
+	align-items: flex-start;
 }

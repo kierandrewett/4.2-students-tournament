@@ -38,14 +38,14 @@ const Intro = () => {
 						below.
 					</p>
 
-					<button className={"primary"} disabled={!ready || !allEvents.length}>
+					<button className={"btn primary"} disabled={!ready || !allEvents.length}>
 						Start
 					</button>
 				</div>
 
 				<div className={"admin-info-container"}>
 					<button
-						className={"secondary"}
+						className={"btn secondary"}
 						disabled={!ready}
 						onClick={() => navigate("/admin")}
 					>
