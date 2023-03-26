@@ -35,6 +35,10 @@ fn setup_application(application: &mut App) {
 
     stores.events.create_event("hi");
 
+    application.listen_global("store.events.create_event", |event| {
+        // todo
+    });
+
     // Spawns an async runtime so we can delay the showing of the window to avoid flickering when loading
     tauri::async_runtime::spawn(async move {
         // adapt sleeping time to be long enough
