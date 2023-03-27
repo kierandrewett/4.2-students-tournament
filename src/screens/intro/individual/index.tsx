@@ -1,47 +1,42 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import HeaderBar from "../../../components/HeaderBar";
-import Sidebar from "../../../components/Sidebar";
+import Sidebar, { Tab } from "../../../components/Sidebar";
+import { store } from "../../../store";
+import { IndividualData } from "../../../types.d";
 
 const IntroIndividual = () => {
 	const location = useLocation();
 
-	const [tabs, setTabs] = React.useState([
-		{
-			id: "0",
-			name: "Kieran",
-			disabled: true,
-			render: () => <></>
-		},
-		{
-			id: "1",
-			name: "Jack",
-			disabled: true,
-			render: () => <></>
-		},
-		{
-			id: "2",
-			name: "Tom",
-			disabled: true,
-			render: () => <></>
-		},
-		{
-			id: "3",
-			name: "Dan",
-			disabled: true,
-			render: () => <></>
-		},
-		{
-			id: "4",
-			name: "Jamie",
-			disabled: true,
-			render: () => <></>
-		}
-	]);
+	const [tabs, setTabs] = React.useState<Tab[]>([]);
+
+	const getAllIndividuals = async () => {
+		return store.individuals.call<IndividualData[]>("get_all_individuals").then((res) => {
+			setTabs(
+				res.map((i) => ({
+					id: i.id.toString(),
+					name: i.name,
+					disabled: true,
+					render: () => <></>
+				}))
+			);
+		});
+	};
+
+	React.useEffect(() => {
+		const getAllPromises = () => Promise.all([getAllIndividuals()]);
+
+		getAllPromises().then((_) => {
+			store.events.on("individual_created", getAllIndividuals);
+		});
+
+		window.addEventListener("focus", getAllPromises);
+		window.addEventListener("blur", getAllPromises);
+	}, []);
 
 	return (
 		<Sidebar
-			title={() => `Individuals (${tabs.length + 1}/20)`}
+			title={() => `Individuals (${tabs.length}/20)`}
 			goBack={() => window.history.back()}
 			tabs={tabs}
 			state={["", (v: any) => {}]}

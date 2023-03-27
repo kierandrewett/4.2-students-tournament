@@ -4,6 +4,7 @@ import HeaderBar from "../../components/HeaderBar";
 import Sidebar from "../../components/Sidebar";
 import { AdminDashboard } from "./dashboard";
 import { AdminEvents } from "./events";
+import { AdminIndividuals } from "./individuals";
 
 const tabs = [
 	{
@@ -15,6 +16,11 @@ const tabs = [
 		id: "events",
 		name: "Events",
 		render: () => <AdminEvents />
+	},
+	{
+		id: "individuals",
+		name: "Individuals",
+		render: () => <AdminIndividuals />
 	}
 ];
 

@@ -18,3 +18,9 @@ export interface EventData {
 	max_points: number;
 	max_teams: number | null;
 }
+
+export interface IndividualData {
+	id: number;
+	name: string;
+	events_ids_entered: number[];
+}

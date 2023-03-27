@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import HeaderBar from "./HeaderBar";
 
-interface Tab {
+export interface Tab {
 	id: string;
 	name: string;
 	render: () => any;

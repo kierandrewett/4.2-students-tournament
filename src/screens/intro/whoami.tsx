@@ -25,7 +25,7 @@ const IntroWhoAmI = () => {
 						>
 							<PersonIcon />I am entering as an individual
 						</button>
-						<button className={"btn secondary"}>
+						<button className={"btn secondary"} onClick={() => navigate("/intro/team")}>
 							<PeopleIcon />I am entering as part of a team
 						</button>
 					</div>

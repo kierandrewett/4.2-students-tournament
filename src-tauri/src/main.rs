@@ -67,7 +67,9 @@ fn main() {
             store::events::ipc::events__get_all_events,
             store::events::ipc::events__delete_event,
             /* Individuals */
-            store::individuals::ipc::individuals__create_individual
+            store::individuals::ipc::individuals__create_individual,
+            store::individuals::ipc::individuals__get_all_individuals,
+            store::individuals::ipc::individuals__delete_individual
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

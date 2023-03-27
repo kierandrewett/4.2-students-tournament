@@ -52,12 +52,13 @@ impl IndividualsStore {
         }
     }
 
-    pub fn create_individual(&mut self, name: &str) -> Result<Value, String> {
+    pub fn create_individual(&mut self, name: &str, events_ids_entered: Vec<u64>) -> Result<Value, String> {
         let all_individuals = &mut self.get_all_individuals();
 
         let data = json!({
             "id": all_individuals.len() + 1,
             "name": name,
+            "events_ids_entered": events_ids_entered
         });
 
         all_individuals.push(data.clone());
@@ -67,5 +68,35 @@ impl IndividualsStore {
         self.save();
 
         Ok(data)
+    }
+
+    pub fn delete_individual(&mut self, id: u64) -> Result<(), String> {
+        let mut all_individuals = &mut self.get_all_individuals().to_owned();
+
+        match self.find_individual_by(|x| x.get("id")
+            .expect("Failed to get id for delete_individual existing check")
+            .as_u64()
+            .unwrap() == id
+        ) {
+            Ok(_) => {},
+            _ => {
+                return Err(format!("Individual with ID '{}' does not exist.", id))
+            }
+        };
+
+        let mut filtered: Vec<&JsonValue> = all_individuals
+            .iter()
+            .filter(|x| x
+                .get("id")
+                .expect("Failed to get ID in iterator")
+                .as_u64()
+                .expect("Failed to cast as u64") != id
+            ).collect::<_>();
+
+        let _ = &self.store.insert("individuals".to_string(), serde_json::to_value(filtered).unwrap());
+
+        self.save();
+
+        Ok(())
     }
 }
