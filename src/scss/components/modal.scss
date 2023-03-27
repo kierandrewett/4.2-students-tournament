@@ -42,6 +42,9 @@
 	border-radius: 1rem;
 	outline: none;
 	overflow: hidden;
+	max-height: 90%;
+	height: 100%;
+	display: flex;
 }
 
 .modal-content .header-bar .btn {
@@ -71,4 +74,5 @@
 	flex-direction: column;
 	padding: 2.25rem;
 	gap: 1.5rem;
+	overflow-y: scroll;
 }

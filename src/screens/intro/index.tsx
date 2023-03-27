@@ -38,7 +38,11 @@ const Intro = () => {
 						below.
 					</p>
 
-					<button className={"btn primary"} disabled={!ready || !allEvents.length}>
+					<button
+						className={"btn primary"}
+						disabled={!ready || !allEvents.length}
+						onClick={() => navigate("/intro/whoami")}
+					>
 						Start
 					</button>
 				</div>

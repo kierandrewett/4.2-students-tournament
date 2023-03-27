@@ -16,4 +16,5 @@ export interface EventData {
 	name: string;
 	kind: EventType;
 	max_points: number;
+	max_teams: number | null;
 }

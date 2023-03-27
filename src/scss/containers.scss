@@ -5,3 +5,17 @@
 	align-items: center;
 	gap: 1rem;
 }
+
+.button-horiz {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.button-horiz.lg-gap {
+	gap: 1.5rem;
+}
+
+.select-horiz {
+	display: flex;
+	gap: 0.5rem;
+}

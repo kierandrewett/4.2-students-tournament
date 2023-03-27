@@ -62,10 +62,12 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
             open_devtools,
-            /* IPC Events */
+            /* Events */
             store::events::ipc::events__create_event,
             store::events::ipc::events__get_all_events,
             store::events::ipc::events__delete_event,
+            /* Individuals */
+            store::individuals::ipc::individuals__create_individual
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

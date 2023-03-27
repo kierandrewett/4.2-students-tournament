@@ -38,12 +38,17 @@ export const AdminEvents = (
 			<div className={"admin-main center-container"}>
 				<h3>All Events</h3>
 
-				<>
-					<button className={"btn primary"} onClick={() => setCreateEventModalOpen(true)}>
-						Create new event...
-					</button>
-					<CreateEventModal state={[createEventModalOpen, setCreateEventModalOpen]} />
-				</>
+				<div className={"button-horiz"}>
+					<div>
+						<button
+							className={"btn primary"}
+							onClick={() => setCreateEventModalOpen(true)}
+						>
+							Create new event...
+						</button>
+						<CreateEventModal state={[createEventModalOpen, setCreateEventModalOpen]} />
+					</div>
+				</div>
 
 				<table className={"table"}>
 					<thead>
@@ -51,11 +56,12 @@ export const AdminEvents = (
 						<th>Name</th>
 						<th>Type</th>
 						<th>Max Points</th>
+						<th>Max Participants/Teams</th>
 						<th>Actions</th>
 					</thead>
 					<tbody>
 						{allEvents.map((e, index) => (
-							<tr>
+							<tr key={index}>
 								<td>{e.id}</td>
 								<td>{e.name}</td>
 								<td>
@@ -69,11 +75,27 @@ export const AdminEvents = (
 									})()}
 								</td>
 								<td>{e.max_points}</td>
+								<td>
+									{e.kind == EventType.Team
+										? e.max_teams || "Unlimited"
+										: "Unlimited"}
+								</td>
 								<td className={"small"}>
 									<button
 										className={"btn danger small"}
-										onClick={() => {
-											store.events.call("delete_event", { id: e.id });
+										onClick={(el: any) => {
+											let int = setTimeout(() => {
+												el.target.removeAttribute("data-sure");
+												el.target.textContent = "Delete";
+											}, 3000);
+
+											if (el.target.hasAttribute("data-sure")) {
+												store.events.call("delete_event", { id: e.id });
+												clearTimeout(int);
+											} else {
+												el.target.setAttribute("data-sure", "");
+												el.target.textContent = "Delete?";
+											}
 										}}
 									>
 										Delete

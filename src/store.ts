@@ -1,5 +1,11 @@
 import { invoke } from "@tauri-apps/api";
 import { EventCallback, listen } from "@tauri-apps/api/event";
+import { homeDir, resolve } from "@tauri-apps/api/path";
+
+export const getStorePath = async (store: string) => {
+	const home = await homeDir();
+	return resolve(home, ".students_tournament", `${store}.store.json`);
+};
 
 class IPCStore {
 	public constructor(public store: string) {}
@@ -19,5 +25,6 @@ class IPCStore {
 
 export const store = {
 	events: new IPCStore("events"),
-	teams: new IPCStore("teams")
+	teams: new IPCStore("teams"),
+	individuals: new IPCStore("individuals")
 };

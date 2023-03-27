@@ -2,6 +2,7 @@ form,
 .form {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 }
 
 label,
@@ -12,7 +13,9 @@ label,
 }
 
 input,
-.input {
+select,
+.input,
+.select {
 	border: none;
 	padding: 0.9rem;
 	border-radius: 1rem;
@@ -41,9 +44,29 @@ input[type="radio"],
 	}
 }
 
+select,
+.select {
+	padding: 0 !important;
+
+	& option {
+		margin: 0.9rem;
+	}
+}
+
+.field-row {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
+
+	& > .field-container {
+		flex: 1 1 0;
+	}
+}
+
 .field-container {
 	display: flex;
 	flex-direction: column;
+	gap: 0.5rem;
 
 	& > label {
 		align-items: center;
@@ -60,4 +83,30 @@ input[type="radio"],
 .field span {
 	color: var(--warning);
 	font-weight: 600;
+}
+
+.select.multi {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	overflow-y: scroll;
+	min-width: 150px;
+
+	& > * {
+		padding: 0.9rem;
+	}
+
+	& > *[data-selected="true"] {
+		background-color: var(--primary);
+		color: rgb(255, 255, 255);
+	}
+}
+
+.select-multi-buttons {
+	display: flex;
+	flex-direction: column;
+
+	& .btn {
+		margin-block: 0 !important;
+	}
 }

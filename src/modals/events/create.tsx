@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import * as yup from "yup";
 import HeaderBar from "../../components/HeaderBar";
 import { store } from "../../store";
+import { EventType } from "../../types.d";
 
 export const CreateEventModal = ({
 	state
@@ -27,7 +28,15 @@ export const CreateEventModal = ({
 			.positive("Max points should be a positive number.")
 			.integer("Max points should be a positive number.")
 			.required("This field is required.")
-			.min(1, "Max points should be more than 1 point.")
+			.min(1, "Max points should be more than 1 point."),
+		maxTeams: yup
+			.number()
+			.nullable()
+			.optional()
+			.typeError("Max teams should be a number.")
+			.positive("Max teams should be a positive number.")
+			.integer("Max teams should be a positive number.")
+			.min(1, "Max teams should be more than 2.")
 	});
 
 	return (
@@ -44,10 +53,13 @@ export const CreateEventModal = ({
 				initialValues={{
 					name: "",
 					kind: "Individual",
-					maxPoints: null
+					maxPoints: "",
+					maxTeams: null
 				}}
-				onSubmit={async (values) => {
-					console.log(values);
+				onSubmit={async (values, helpers) => {
+					if (values.kind !== EventType.Team) {
+						helpers.setFieldValue("maxTeams", null);
+					}
 
 					store.events
 						.call("create_event", values)
@@ -55,13 +67,13 @@ export const CreateEventModal = ({
 						.catch((e) => console.error(e));
 				}}
 			>
-				{({ setFieldValue }) => (
+				{({ values, isValid }) => (
 					<Form>
 						<HeaderBar
 							cancel={() => closeModal()}
 							cancelProps={{ type: "button" }}
 							ok={() => {}}
-							okProps={{ type: "submit" }}
+							okProps={{ type: "submit", disabled: !isValid }}
 							title={"Create New Event..."}
 						/>
 
@@ -75,7 +87,7 @@ export const CreateEventModal = ({
 							</div>
 
 							<div className={"field"}>
-								<label id="kind">Picked</label>
+								<label id="kind">Event Type</label>
 								<div
 									className={"field-container"}
 									role="group"
@@ -103,6 +115,22 @@ export const CreateEventModal = ({
 										type={"number"}
 									/>
 									<ErrorMessage name={"maxPoints"} component={"span"} />
+								</div>
+							</div>
+
+							<div
+								className={"field"}
+								style={{ display: values.kind == EventType.Team ? "" : "none" }}
+							>
+								<label htmlFor="maxTeams">Max Teams</label>
+								<div className={"field-container"}>
+									<Field
+										id="maxTeams"
+										name="maxTeams"
+										placeholder={"Enter blank for unlimited teams"}
+										type={"number"}
+									/>
+									<ErrorMessage name={"maxTeams"} component={"span"} />
 								</div>
 							</div>
 						</main>

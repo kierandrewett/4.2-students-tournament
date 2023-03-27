@@ -14,9 +14,10 @@ pub fn events__create_event(
     stores: State<'_, Arc<Mutex<AllStores>>>, 
     name: &str,
     kind: EventType,
-    max_points: u16
+    max_points: u16,
+    max_teams: Option<u16>,
 ) -> Result<Value, std::string::String> {
-    match stores.lock().unwrap().events.create_event(name, kind, max_points) {
+    match stores.lock().unwrap().events.create_event(name, kind, max_points, max_teams) {
         Ok(res) => {
             window.emit_all("events__on_event_created", res.clone()).expect("Failed to dispatch event");
             Ok(res.clone())

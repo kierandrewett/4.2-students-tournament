@@ -5,6 +5,7 @@ interface Tab {
 	id: string;
 	name: string;
 	render: () => any;
+	disabled?: boolean;
 }
 
 const Sidebar = ({
@@ -15,7 +16,7 @@ const Sidebar = ({
 	tabs,
 	children
 }: {
-	title?: string;
+	title?: string | (() => any);
 	goBack?: () => any;
 	content?: any;
 	state: [string, Dispatch<SetStateAction<string>>];
@@ -36,6 +37,7 @@ const Sidebar = ({
 							className={"btn secondary"}
 							data-selected={visible == t.id}
 							onClick={() => setVisible(t.id)}
+							style={{ pointerEvents: t.disabled ? ("none" as any) : "" }}
 						>
 							{t.name}
 						</button>

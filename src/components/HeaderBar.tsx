@@ -10,7 +10,7 @@ const HeaderBar = ({
 	okProps,
 	goBack
 }: {
-	title?: string;
+	title?: string | (() => any);
 	cancel?: (...rest: any) => any;
 	cancelText?: string;
 	cancelProps?: React.DetailedHTMLProps<
@@ -40,13 +40,17 @@ const HeaderBar = ({
 					)}
 
 					{goBack && (
-						<button className={"btn is-icon"} onClick={goBack}>
+						<button className={"btn is-icon"} type={"button"} onClick={goBack}>
 							<BackIcon />
 						</button>
 					)}
 				</div>
 
-				{title && <span className={"header-bar-title"}>{title}</span>}
+				{title && (
+					<span className={"header-bar-title"}>
+						{typeof title == "function" ? title() : title}
+					</span>
+				)}
 
 				<div className={"header-bar-button-container"}>
 					{ok && (

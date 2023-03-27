@@ -54,7 +54,7 @@ impl EventsStore {
         }
     }
 
-    pub fn create_event(&mut self, name: &str, kind: EventType, max_points: u16) -> Result<Value, String> {
+    pub fn create_event(&mut self, name: &str, kind: EventType, max_points: u16, max_teams: Option<u16>) -> Result<Value, String> {
         let all_events = &mut self.get_all_events();
 
         match self.find_event_by(|x| x.get("name")
@@ -68,11 +68,20 @@ impl EventsStore {
             _ => {}
         };
 
+        let _max_teams: Option<u16> = match max_teams.is_some() {
+            true => match kind == EventType::Team {
+                true => Some(max_teams.unwrap()),
+                false => None
+            },
+            false => None
+        };
+
         let data = json!({
             "id": all_events.len() + 1,
             "name": name,
             "kind": kind,
-            "max_points": max_points
+            "max_points": max_points,
+            "max_teams": _max_teams
         });
 
         all_events.push(data.clone());
