@@ -23,11 +23,11 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	animation: ReactModal__Overlay_fade 1s ease forwards;
+	animation: ReactModal__Overlay_fade 1s ease forwards !important;
 }
 
 .modal-content {
-	animation: ReactModal__Content_swipe 0.075s ease forwards;
+	animation: ReactModal__Content_swipe 0.075s ease forwards !important;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -67,5 +67,8 @@
 }
 
 .modal-content .modal-main {
+	display: flex;
+	flex-direction: column;
 	padding: 2.25rem;
+	gap: 1.5rem;
 }

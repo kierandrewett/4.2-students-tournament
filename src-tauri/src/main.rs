@@ -64,7 +64,8 @@ fn main() {
             open_devtools,
             /* IPC Events */
             store::events::ipc::events__create_event,
-            store::events::ipc::events__get_all_events
+            store::events::ipc::events__get_all_events,
+            store::events::ipc::events__delete_event,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

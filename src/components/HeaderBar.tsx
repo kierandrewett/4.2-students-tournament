@@ -4,23 +4,37 @@ const HeaderBar = ({
 	title,
 	cancel,
 	cancelText,
+	cancelProps,
 	ok,
 	okText,
+	okProps,
 	goBack
 }: {
 	title?: string;
-	cancel?: () => any;
+	cancel?: (...rest: any) => any;
 	cancelText?: string;
-	ok?: () => any;
+	cancelProps?: React.DetailedHTMLProps<
+		React.ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	>;
+	ok?: (...rest: any) => any;
 	okText?: string;
-	goBack?: () => any;
+	okProps?: React.DetailedHTMLProps<
+		React.ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	>;
+	goBack?: (...rest: any) => any;
 }) => {
 	return (
 		<header className={"header-bar"}>
 			<div className={"header-bar-container"}>
 				<div className={"header-bar-button-container"}>
 					{cancel && (
-						<button className={"btn secondary"} onClick={cancel}>
+						<button
+							{...(cancelProps || {})}
+							className={"btn secondary"}
+							onClick={cancel}
+						>
 							{cancelText || "Cancel"}
 						</button>
 					)}
@@ -36,7 +50,7 @@ const HeaderBar = ({
 
 				<div className={"header-bar-button-container"}>
 					{ok && (
-						<button className={"btn primary"} onClick={ok}>
+						<button {...(okProps || {})} className={"btn primary"} onClick={() => ok()}>
 							{okText || "OK"}
 						</button>
 					)}

@@ -2,7 +2,6 @@ form,
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
 }
 
 label,
@@ -45,17 +44,17 @@ input[type="radio"],
 .field-container {
 	display: flex;
 	flex-direction: column;
+
+	& > label {
+		align-items: center;
+		gap: 0.5rem;
+	}
 }
 
 .field {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-
-	& > label {
-		align-items: center;
-		gap: 0.5rem;
-	}
 }
 
 .field span {

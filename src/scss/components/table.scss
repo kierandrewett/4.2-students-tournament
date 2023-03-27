@@ -50,3 +50,7 @@
 .table tbody tr:last-child td {
 	border-bottom: 1px solid var(--secondary);
 }
+
+.table td.small {
+	padding: 0.5rem;
+}

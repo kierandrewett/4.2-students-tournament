@@ -6,8 +6,6 @@ import { EventData, EventType } from "../../types.d";
 export const AdminEvents = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
-	const [selectedEvents, setSelectedEvents] = React.useState(new Map<number, boolean>());
-
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
 
 	const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
@@ -23,6 +21,7 @@ export const AdminEvents = (
 
 		getAllPromises().then((_) => {
 			store.events.on("event_created", getAllEvents);
+			store.events.on("event_deleted", getAllEvents);
 		});
 
 		window.addEventListener("focus", getAllPromises);
@@ -46,31 +45,17 @@ export const AdminEvents = (
 					<CreateEventModal state={[createEventModalOpen, setCreateEventModalOpen]} />
 				</>
 
-				<button className={"btn danger"} disabled={selectedEvents.size == 0}>
-					Delete selected
-				</button>
-
 				<table className={"table"}>
 					<thead>
-						<th></th>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Type</th>
 						<th>Max Points</th>
+						<th>Actions</th>
 					</thead>
 					<tbody>
 						{allEvents.map((e, index) => (
 							<tr>
-								<td>
-									<input
-										type="checkbox"
-										onChange={(e) => {
-											selectedEvents.set(index, e.target.checked);
-
-											setSelectedEvents(selectedEvents);
-										}}
-									/>
-								</td>
 								<td>{e.id}</td>
 								<td>{e.name}</td>
 								<td>
@@ -84,6 +69,16 @@ export const AdminEvents = (
 									})()}
 								</td>
 								<td>{e.max_points}</td>
+								<td className={"small"}>
+									<button
+										className={"btn danger small"}
+										onClick={() => {
+											store.events.call("delete_event", { id: e.id });
+										}}
+									>
+										Delete
+									</button>
+								</td>
 							</tr>
 						))}
 					</tbody>

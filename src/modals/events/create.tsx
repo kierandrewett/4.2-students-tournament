@@ -2,6 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Modal from "react-modal";
 import * as yup from "yup";
 import HeaderBar from "../../components/HeaderBar";
+import { store } from "../../store";
 
 export const CreateEventModal = ({
 	state
@@ -19,9 +20,12 @@ export const CreateEventModal = ({
 			.string()
 			.required("This field is required.")
 			.min(4, "Event name should be longer than 4 characters."),
-		kind: yup.string().required("This field is required.").oneOf(["individual", "team"]),
-		max_points: yup
+		kind: yup.string().required("This field is required.").oneOf(["Individual", "Team"]),
+		maxPoints: yup
 			.number()
+			.typeError("Max points should be a number.")
+			.positive("Max points should be a positive number.")
+			.integer("Max points should be a positive number.")
 			.required("This field is required.")
 			.min(1, "Max points should be more than 1 point.")
 	});
@@ -35,56 +39,76 @@ export const CreateEventModal = ({
 			style={{ content: { minWidth: 550, minHeight: 300 } }}
 			contentLabel={"Create New Event..."}
 		>
-			<HeaderBar
-				cancel={() => closeModal()}
-				ok={() => closeModal()}
-				title={"Create New Event..."}
-			/>
+			<Formik
+				validationSchema={schema}
+				initialValues={{
+					name: "",
+					kind: "Individual",
+					maxPoints: null
+				}}
+				onSubmit={async (values) => {
+					console.log(values);
 
-			<main className={"modal-main"}>
-				<Formik
-					initialValues={{ name: "", kind: "individual", max_points: 0 }}
-					validationSchema={schema}
-					onSubmit={async (values) => {
-						await new Promise((r) => setTimeout(r, 500));
-						alert(JSON.stringify(values, null, 2));
-					}}
-				>
+					store.events
+						.call("create_event", values)
+						.then((_) => closeModal())
+						.catch((e) => console.error(e));
+				}}
+			>
+				{({ setFieldValue }) => (
 					<Form>
-						<div className={"field-container"}>
-							<label htmlFor="name">Event Name</label>
-							<div className={"field"}>
-								<Field name="name" type="text" placeholder="" autoFocus={true} />
-								<ErrorMessage name="name" component={"span"} />
-							</div>
-						</div>
+						<HeaderBar
+							cancel={() => closeModal()}
+							cancelProps={{ type: "button" }}
+							ok={() => {}}
+							okProps={{ type: "submit" }}
+							title={"Create New Event..."}
+						/>
 
-						<div className={"field-container"}>
-							<div id="kind" className={"label"}>
-								Event Kind
+						<main className={"modal-main"}>
+							<div className="field">
+								<label htmlFor="name">Event Name</label>
+								<div className="field-container">
+									<Field id="name" name="name" placeholder="" />
+									<ErrorMessage name={"name"} component={"span"} />
+								</div>
 							</div>
-							<div className={"field"} role="group" aria-labelledby="kind">
-								<label>
-									<Field type="radio" name="kind" value="individual" />
-									Individual
-								</label>
-								<label>
-									<Field type="radio" name="kind" value="team" />
-									Team
-								</label>
-							</div>
-						</div>
 
-						<div className={"field-container"}>
-							<label htmlFor="max_points">Event Max Points</label>
 							<div className={"field"}>
-								<Field name="max_points" type="num" placeholder="" />
-								<ErrorMessage name="max_points" component={"span"} />
+								<label id="kind">Picked</label>
+								<div
+									className={"field-container"}
+									role="group"
+									aria-labelledby="kind"
+								>
+									<label>
+										<Field type="radio" name="kind" value="Individual" />
+										Individual
+									</label>
+									<label>
+										<Field type="radio" name="kind" value="Team" />
+										Team
+									</label>
+									<ErrorMessage name={"kind"} component={"span"} />
+								</div>
 							</div>
-						</div>
+
+							<div className={"field"}>
+								<label htmlFor="maxPoints">Max Points</label>
+								<div className={"field-container"}>
+									<Field
+										id="maxPoints"
+										name="maxPoints"
+										placeholder=""
+										type={"number"}
+									/>
+									<ErrorMessage name={"maxPoints"} component={"span"} />
+								</div>
+							</div>
+						</main>
 					</Form>
-				</Formik>
-			</main>
+				)}
+			</Formik>
 		</Modal>
 	);
 };

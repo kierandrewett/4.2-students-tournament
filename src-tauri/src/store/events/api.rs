@@ -83,4 +83,34 @@ impl EventsStore {
 
         Ok(data)
     }
+
+    pub fn delete_event(&mut self, id: u64) -> Result<(), String> {
+        let mut all_events = &mut self.get_all_events().to_owned();
+
+        match self.find_event_by(|x| x.get("id")
+            .expect("Failed to get id for delete_event existing check")
+            .as_u64()
+            .unwrap() == id
+        ) {
+            Ok(_) => {},
+            _ => {
+                return Err(format!("Event with ID '{}' does not exist.", id))
+            }
+        };
+
+        let mut filtered: Vec<&JsonValue> = all_events
+            .iter()
+            .filter(|x| x
+                .get("id")
+                .expect("Failed to get ID in iterator")
+                .as_u64()
+                .expect("Failed to cast as u64") != id
+            ).collect::<_>();
+
+        let _ = &self.store.insert("events".to_string(), serde_json::to_value(filtered).unwrap());
+
+        self.save();
+
+        Ok(())
+    }
 }

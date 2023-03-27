@@ -19,6 +19,17 @@
             },
             "dialog": {
                 "all": true
+            },
+            "window": {
+                "all": false,
+                "close": true,
+                "hide": true,
+                "show": true,
+                "maximize": true,
+                "minimize": true,
+                "unmaximize": true,
+                "unminimize": true,
+                "startDragging": true
             }
         },
         "bundle": {
@@ -45,7 +56,8 @@
                 "resizable": true,
                 "title": "Students Tournament",
                 "width": 1100,
-                "height": 600,
+                "minHeight": 600,
+                "minWidth": 400,
                 "visible": false
             }
         ]

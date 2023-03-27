@@ -77,3 +77,7 @@ button.btn.is-icon:hover {
 button.btn.is-icon:active {
 	background-color: var(--secondary-dark);
 }
+
+button.btn.small {
+	padding: 0.5rem 1rem;
+}
