@@ -13,16 +13,20 @@
         "@dothq/id": "^1.0.1",
         "@ekwoka/hotkeys": "^1.0.1",
         "@tauri-apps/api": "^1.2.0",
+        "formik": "^2.2.9",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-modal": "^3.16.1",
         "react-router-dom": "^6.9.0",
-        "react-transition-group": "^4.4.5"
+        "react-transition-group": "^4.4.5",
+        "yup": "^1.0.2"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.2.2",
         "@types/node": "^18.7.10",
         "@types/react": "^18.0.15",
         "@types/react-dom": "^18.0.6",
+        "@types/react-modal": "^3.13.1",
         "@types/react-router-dom": "^5.3.3",
         "@types/react-transition-group": "^4.4.5",
         "@vitejs/plugin-react": "^3.0.0",

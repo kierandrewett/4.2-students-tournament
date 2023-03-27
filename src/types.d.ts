@@ -15,4 +15,5 @@ export interface EventData {
 	id: number;
 	name: string;
 	kind: EventType;
+	max_points: number;
 }

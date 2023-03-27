@@ -8,7 +8,8 @@ button {
 }
 
 button.btn.primary,
-button.btn.secondary {
+button.btn.secondary,
+button.btn.danger {
 	appearance: none;
 	padding: 0.8rem 2.2rem;
 	font-size: 1rem;
@@ -48,6 +49,19 @@ button.btn.secondary:hover {
 
 button.btn.secondary:active {
 	background-color: var(--secondary-darker);
+}
+
+button.btn.danger {
+	background-color: var(--danger);
+	color: rgb(255, 255, 255);
+}
+
+button.btn.danger:hover {
+	background-color: var(--danger-dark);
+}
+
+button.btn.danger:active {
+	background-color: var(--danger-darker);
 }
 
 button.btn.is-icon {

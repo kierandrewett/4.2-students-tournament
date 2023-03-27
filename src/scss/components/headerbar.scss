@@ -1,10 +1,8 @@
 .header-bar {
 	display: flex;
 	width: 100%;
-	height: 100%;
 	align-items: center;
 	padding: 0.5rem;
-	max-height: 56px;
 }
 
 .header-bar-container {
@@ -19,6 +17,11 @@
 }
 
 .header-bar-container .header-bar-button-container {
+	display: flex;
+}
+
+.header-bar-container .header-bar-button-container:last-of-type {
+	justify-content: flex-end;
 }
 
 .header-bar-container .header-bar-title {
@@ -27,4 +30,8 @@
 	align-items: center;
 	width: 100%;
 	font-weight: 600;
+}
+
+.header-bar-container .header-bar-button-container .btn.primary {
+	box-shadow: none !important;
 }

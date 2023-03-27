@@ -1,0 +1,64 @@
+form,
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+label,
+.label {
+	display: flex;
+	font-weight: 600;
+	margin-block-end: 1rem;
+}
+
+input,
+.input {
+	border: none;
+	padding: 0.9rem;
+	border-radius: 1rem;
+	background: white;
+	border: 1px solid var(--secondary);
+	box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.1);
+	border-radius: 12px;
+	outline-offset: -2px;
+	outline-width: 4px;
+	font-family: initial;
+	font-size: initial;
+}
+
+input[type="radio"],
+.input[type="radio"] {
+	border-radius: 999px;
+	transition: 0.1s background-color ease-out, 0.1s box-shadow ease-out;
+	box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.1), inset 0px 0px 0px 0px var(--primary);
+
+	&:active {
+		background-color: var(--secondary-dark);
+	}
+
+	&:checked {
+		box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.1), inset 0px 0px 0px 10px var(--primary);
+	}
+}
+
+.field-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	& > label {
+		align-items: center;
+		gap: 0.5rem;
+	}
+}
+
+.field span {
+	color: var(--warning);
+	font-weight: 600;
+}

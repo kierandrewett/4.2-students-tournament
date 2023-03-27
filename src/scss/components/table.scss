@@ -2,23 +2,24 @@
 	border-collapse: separate;
 }
 
-.table td {
+.table td,
+.table th {
 	padding: 1rem;
 }
 
-.table thead td {
+.table thead th {
 	border: 1px solid var(--secondary);
 	border-left: 0;
 
 	font-weight: 500;
 }
 
-.table thead td:first-child {
+.table thead th:first-child {
 	border-left: 1px solid var(--secondary);
 	border-top-left-radius: 0.5rem;
 }
 
-.table thead td:last-child {
+.table thead th:last-child {
 	border-top-right-radius: 0.5rem;
 }
 
