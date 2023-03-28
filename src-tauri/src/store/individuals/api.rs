@@ -1,8 +1,6 @@
-use std::error::Error;
-
 use serde_json::json;
 use serde_json::Value;
-use tauri::{Wry, App, Manager};
+use tauri::{Wry};
 use tauri_plugin_store::{ Store, JsonValue };
 
 pub struct IndividualsStore {
@@ -24,9 +22,9 @@ impl IndividualsStore {
     }
 
     pub fn get_all_individuals(&mut self) -> Vec<JsonValue> {
-        let all_events = &mut self.store.get("individuals").unwrap().as_array().cloned().unwrap();
+        let all_individuals = &mut self.store.get("individuals").unwrap().as_array().cloned().unwrap();
 
-        all_events.clone()
+        all_individuals.clone()
     }
 
     pub fn find_individual_by<T: for<'a> FnMut(&'a &JsonValue) -> bool>(&mut self, mut predicate: T) -> Result<JsonValue, &str> {
@@ -71,7 +69,7 @@ impl IndividualsStore {
     }
 
     pub fn delete_individual(&mut self, id: u64) -> Result<(), String> {
-        let mut all_individuals = &mut self.get_all_individuals().to_owned();
+        let all_individuals = &mut self.get_all_individuals().to_owned();
 
         match self.find_individual_by(|x| x.get("id")
             .expect("Failed to get id for delete_individual existing check")
@@ -84,7 +82,7 @@ impl IndividualsStore {
             }
         };
 
-        let mut filtered: Vec<&JsonValue> = all_individuals
+        let filtered: Vec<&JsonValue> = all_individuals
             .iter()
             .filter(|x| x
                 .get("id")

@@ -8,6 +8,7 @@ import IntroIndividualHome from "../screens/intro/individual/home";
 import IntroIndividualSignup from "../screens/intro/individual/signup";
 import IntroTeam from "../screens/intro/team";
 import IntroTeamsCreate from "../screens/intro/team/create";
+import IntroTeamsJoin from "../screens/intro/team/join";
 import IntroWhoAmI from "../screens/intro/whoami";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
 			</Route>
 			<Route path={"/intro/team"} element={<IntroTeam />} />
 			<Route path={"/intro/team/create"} element={<IntroTeamsCreate />} />
+			<Route path={"/intro/team/join"} element={<IntroTeamsJoin />} />
 
 			<Route path={"/admin"} element={<AdminMain />} />
 			<Route path={"/"} element={<Main />} />

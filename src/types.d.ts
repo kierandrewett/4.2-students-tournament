@@ -24,3 +24,9 @@ export interface IndividualData {
 	name: string;
 	events_ids_entered: number[];
 }
+
+export interface TeamData {
+	id: number;
+	name: string;
+	events_ids_entered: number[];
+}

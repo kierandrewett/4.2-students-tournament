@@ -1,12 +1,11 @@
-use std::{path::PathBuf, collections::HashMap, hash::Hash};
+use std::{path::PathBuf};
 
-use tauri::{App, api::path::home_dir, Wry, EventLoopMessage};
+use tauri::{App, api::path::home_dir, Wry};
 use tauri_plugin_store::{StoreBuilder, Store};
 
 use crate::store::events::api::EventsStore;
 use crate::store::individuals::api::IndividualsStore;
-
-use self::teams::TeamsStore;
+use crate::store::teams::api::TeamsStore;
 
 pub mod events;
 pub mod individuals;
@@ -72,7 +71,7 @@ fn init_individuals_store(application: &App) -> Store<Wry> {
 pub struct AllStores {
     pub events: EventsStore,
     pub teams: TeamsStore,
-    pub individuals: IndividualsStore
+    pub individuals: IndividualsStore,
 }
 
 pub fn init(application: &App) -> AllStores {

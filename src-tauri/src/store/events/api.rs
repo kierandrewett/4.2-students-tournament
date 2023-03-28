@@ -1,8 +1,6 @@
-use std::error::Error;
-
 use serde_json::json;
 use serde_json::Value;
-use tauri::{Wry, App, Manager};
+use tauri::{Wry};
 use tauri_plugin_store::{ Store, JsonValue };
 
 use super::EventType;
@@ -94,7 +92,7 @@ impl EventsStore {
     }
 
     pub fn delete_event(&mut self, id: u64) -> Result<(), String> {
-        let mut all_events = &mut self.get_all_events().to_owned();
+        let all_events = &mut self.get_all_events().to_owned();
 
         match self.find_event_by(|x| x.get("id")
             .expect("Failed to get id for delete_event existing check")
@@ -107,7 +105,7 @@ impl EventsStore {
             }
         };
 
-        let mut filtered: Vec<&JsonValue> = all_events
+        let filtered: Vec<&JsonValue> = all_events
             .iter()
             .filter(|x| x
                 .get("id")

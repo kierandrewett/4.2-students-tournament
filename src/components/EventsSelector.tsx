@@ -123,7 +123,7 @@ export const EventsSelector = ({
 				</div>
 
 				<div className={"field"}>
-					<label>Your Events</label>
+					<label>{type == EventType.Individual ? "Your" : "Team's"} Events</label>
 
 					<div
 						className="select multi"

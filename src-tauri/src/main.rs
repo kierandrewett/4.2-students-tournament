@@ -69,7 +69,12 @@ fn main() {
             /* Individuals */
             store::individuals::ipc::individuals__create_individual,
             store::individuals::ipc::individuals__get_all_individuals,
-            store::individuals::ipc::individuals__delete_individual
+            store::individuals::ipc::individuals__delete_individual,
+            /* Teams */
+            store::teams::ipc::teams__create_team,
+            store::teams::ipc::teams__get_all_teams,
+            store::teams::ipc::teams__delete_team,
+            store::teams::ipc::teams__add_player_to_team,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

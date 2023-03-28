@@ -1,0 +1,38 @@
+.teams-create-app {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.teams-create-initial {
+	overflow-y: scroll;
+	height: 100%;
+}
+
+.teams-create-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.teams-create {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	width: 450px;
+	height: -webkit-fit-content;
+}
+
+.teams-create h1 {
+	text-align: center;
+}
+
+.teams-create .field {
+	width: 100%;
+}
+
+.teams-create form {
+	gap: 2rem;
+	margin-bottom: 4rem;
+}
