@@ -46,3 +46,26 @@
 .floating-row .col {
 	padding: 1rem;
 }
+
+.table-grid.is-record-table .head::before {
+	content: "";
+	top: 0;
+	height: 3rem;
+	width: 100%;
+	background-color: white;
+	position: absolute;
+	z-index: 5;
+	border-radius: 0.5rem;
+}
+
+.record-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 3rem 0;
+}
+
+.record-table-container {
+	min-height: min-content;
+	margin: auto;
+}

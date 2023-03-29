@@ -124,10 +124,6 @@ export const AdminFinalise = (
 				title={() => `Events (${new Set(completedTabs).size}/${tabs.length - 2}) `}
 				tabs={tabs}
 				state={[tabSelected, setTabSelected]}
-				goBack={() => {}}
-				goBackProps={{ disabled: !navState[0] }}
-				goForward={() => {}}
-				goForwardProps={{ disabled: !navState[1] }}
 				classNames={{
 					items: "final-items"
 				}}
@@ -146,6 +142,9 @@ export const AdminFinalise = (
 				</div>
 			</Sidebar>
 			<HeaderBar
+				cancel={() => {}}
+				cancelText={"Record the results for each event and mark them all as done."}
+				cancelProps={{ className: "btn", style: { marginInlineStart: "0.5rem" } }}
 				ok={() => {}}
 				okText={"Create final results"}
 				okProps={{
