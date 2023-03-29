@@ -1,8 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![feature(fn_traits)]
 
-use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}};
+use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::File, io::Write};
 
+use store::get_data_dir;
 use tauri::{App, Manager, Window};
 
 mod store;
@@ -15,6 +16,15 @@ fn greet(name: &str) -> String {
 #[tauri::command]
 fn open_devtools(window: Window) {
     window.open_devtools();
+}
+
+#[tauri::command]
+fn lock_data(window: Window) {
+    let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
+
+    let mut lock_file = File::create(lock_file_path).expect("Failed to lock data.");
+
+    lock_file.write_all(b"").expect("Failed to lock data.");
 }
 
 fn setup_application(application: &mut App) {
@@ -62,6 +72,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
             open_devtools,
+            lock_data,
             /* Events */
             store::events::ipc::events__create_event,
             store::events::ipc::events__get_all_events,
@@ -75,6 +86,8 @@ fn main() {
             store::teams::ipc::teams__get_all_teams,
             store::teams::ipc::teams__delete_team,
             store::teams::ipc::teams__add_player_to_team,
+            store::teams::ipc::teams__remove_player_from_team,
+            store::teams::ipc::teams__edit_team_events
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

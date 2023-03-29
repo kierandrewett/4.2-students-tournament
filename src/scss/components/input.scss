@@ -30,6 +30,11 @@ select,
 	font-size: initial;
 }
 
+input[disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
 .select-container {
 	position: relative;
 }

@@ -9,13 +9,15 @@ export const EventsSelector = ({
 	userSelected,
 	type,
 	push,
-	remove
+	remove,
+	noErrorMessage
 }: {
 	name: string;
 	userSelected: number[];
 	type: EventType;
 	push: ArrayHelpers["push"];
 	remove: ArrayHelpers["remove"];
+	noErrorMessage?: boolean;
 }) => {
 	const [rightSideSelected, setRightSideSelected] = React.useState<number | null>();
 	const [leftSideSelected, setLeftSideSelected] = React.useState<number | null>();
@@ -153,7 +155,7 @@ export const EventsSelector = ({
 				</div>
 			</div>
 
-			<ErrorMessage name={name} component={"span"} />
+			{!noErrorMessage && <ErrorMessage name={name} component={"span"} />}
 		</div>
 	);
 };

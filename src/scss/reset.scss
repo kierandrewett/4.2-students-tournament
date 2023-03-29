@@ -78,14 +78,13 @@ main {
 	display: block;
 }
 
+p {
+	line-height: 1.5;
+}
+
 body {
 	line-height: 1;
 	-webkit-user-select: none;
-}
-
-ol,
-ul {
-	list-style: none;
 }
 
 blockquote,

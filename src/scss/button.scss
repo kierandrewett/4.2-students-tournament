@@ -18,6 +18,7 @@ button.btn.danger {
 	border-radius: 999px;
 	width: -webkit-fit-content;
 	align-items: center;
+	gap: 1rem;
 }
 
 button.btn[disabled] {
@@ -81,4 +82,5 @@ button.btn.is-icon:active {
 
 button.btn.small {
 	padding: 0.5rem 1rem;
+	gap: 0.5rem;
 }

@@ -53,6 +53,10 @@ impl IndividualsStore {
     pub fn create_individual(&mut self, name: &str, events_ids_entered: Vec<u64>) -> Result<Value, String> {
         let all_individuals = &mut self.get_all_individuals();
 
+        if all_individuals.len() >= 20 {
+            return Err("Cannot create any more teams. Maximum of 20 teams reached.".to_string())
+        }
+
         let data = json!({
             "id": all_individuals.len() + 1,
             "name": name,

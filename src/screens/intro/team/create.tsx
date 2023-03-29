@@ -1,4 +1,5 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { EventsSelector } from "../../../components/EventsSelector";
@@ -15,6 +16,26 @@ const IntroTeamsCreate = () => {
 			.required("This field is required.")
 			.min(2, "Team Name should be longer than 2 characters.")
 	});
+
+	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
+
+	const getAllTeams = async () => {
+		return store.teams.call<TeamData[]>("get_all_teams").then((res) => {
+			setAllTeams(res);
+		});
+	};
+
+	React.useEffect(() => {
+		const getAllPromises = () => Promise.all([getAllTeams()]);
+
+		getAllPromises().then((_) => {
+			store.teams.on("team_created", getAllTeams);
+			store.teams.on("team_deleted", getAllTeams);
+		});
+
+		window.addEventListener("focus", getAllPromises);
+		window.addEventListener("blur", getAllPromises);
+	}, []);
 
 	return (
 		<div className={"teams-create-app"}>
@@ -72,13 +93,25 @@ const IntroTeamsCreate = () => {
 										</div>
 									</div>
 
-									<button
-										type={"submit"}
-										className={"btn primary"}
-										disabled={!isValid || !values.eventsIdsEntered.length}
-									>
-										Create team
-									</button>
+									<div className={"field"} style={{ alignItems: "center" }}>
+										<button
+											type={"submit"}
+											className={"btn primary"}
+											disabled={
+												!isValid ||
+												!values.eventsIdsEntered.length ||
+												allTeams.length >= 4
+											}
+										>
+											Create team
+										</button>
+										{allTeams.length >= 4 && (
+											<span>
+												Cannot create any more teams. Maximum of 4 teams
+												reached.
+											</span>
+										)}
+									</div>
 								</Form>
 							)}
 						</Formik>

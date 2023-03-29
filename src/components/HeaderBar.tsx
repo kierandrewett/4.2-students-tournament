@@ -8,7 +8,10 @@ const HeaderBar = ({
 	ok,
 	okText,
 	okProps,
-	goBack
+	goBack,
+	goBackProps,
+	goForward,
+	goForwardProps
 }: {
 	title?: string | (() => any);
 	cancel?: (...rest: any) => any;
@@ -24,6 +27,9 @@ const HeaderBar = ({
 		HTMLButtonElement
 	>;
 	goBack?: (...rest: any) => any;
+	goForward?: (...rest: any) => any;
+	goBackProps?: any;
+	goForwardProps?: any;
 }) => {
 	return (
 		<header className={"header-bar"}>
@@ -31,16 +37,21 @@ const HeaderBar = ({
 				<div className={"header-bar-button-container"}>
 					{cancel && (
 						<button
-							{...(cancelProps || {})}
 							className={"btn secondary"}
 							onClick={cancel}
+							{...(cancelProps || {})}
 						>
 							{cancelText || "Cancel"}
 						</button>
 					)}
 
 					{goBack && (
-						<button className={"btn is-icon"} type={"button"} onClick={goBack}>
+						<button
+							{...goBackProps}
+							className={"btn is-icon"}
+							type={"button"}
+							onClick={goBack}
+						>
 							<BackIcon />
 						</button>
 					)}
@@ -54,8 +65,19 @@ const HeaderBar = ({
 
 				<div className={"header-bar-button-container"}>
 					{ok && (
-						<button {...(okProps || {})} className={"btn primary"} onClick={() => ok()}>
+						<button className={"btn primary"} onClick={() => ok()} {...(okProps || {})}>
 							{okText || "OK"}
+						</button>
+					)}
+
+					{goForward && (
+						<button
+							{...goForwardProps}
+							className={"btn is-icon"}
+							type={"button"}
+							onClick={goBack}
+						>
+							<BackIcon style={{ transform: "rotate(180deg)" }} />
 						</button>
 					)}
 				</div>

@@ -11,7 +11,7 @@ const IntroTeamsJoin = () => {
 	const location = useLocation();
 
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
-	``;
+
 	const schema = yup.object().shape({
 		team_id: yup.number().integer().required("Team is required."),
 		_first_name: yup
@@ -47,7 +47,7 @@ const IntroTeamsJoin = () => {
 				title={""}
 				goBack={
 					location.state && location.state.team_id
-						? undefined
+						? () => window.history.back()
 						: () => navigate("/intro/team")
 				}
 			/>
@@ -61,6 +61,20 @@ const IntroTeamsJoin = () => {
 								team_id: (location.state && location.state.team_id) || "",
 								_first_name: "",
 								_last_name: ""
+							}}
+							validate={(values) => {
+								const errors: any = {};
+
+								if (values.team_id) {
+									const team = allTeams.find((t) => t.id == values.team_id);
+
+									if (team?.players && team.players.length >= 5) {
+										errors.team_id =
+											"Cannot join team. Team has reached maximum 5 players.";
+									}
+								}
+
+								return errors;
 							}}
 							onSubmit={async (values, helpers) => {
 								const playerName = `${values._first_name} ${values._last_name}`;
@@ -86,7 +100,7 @@ const IntroTeamsJoin = () => {
 								);
 							}}
 						>
-							{({ values, isValid }) => (
+							{({ values, isValid, handleChange }) => (
 								<>
 									<h1>
 										{location.state && location.state.team_id
@@ -114,6 +128,7 @@ const IntroTeamsJoin = () => {
 														{allTeams.map((t) => (
 															<option key={t.id} value={t.id}>
 																{t.name}
+																{` (${(t.players || []).length}/5)`}
 															</option>
 														))}
 													</Field>
@@ -157,8 +172,6 @@ const IntroTeamsJoin = () => {
 												</div>
 											</div>
 										</div>
-
-										<span>{JSON.stringify(values)}</span>
 
 										<button
 											type={"submit"}

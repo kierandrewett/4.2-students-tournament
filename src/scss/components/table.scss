@@ -54,3 +54,45 @@
 .table td.small {
 	padding: 0.5rem;
 }
+
+.table-grid {
+	display: grid;
+	grid-template-columns: var(--col-template);
+	grid-template-rows: var(--row-template);
+	border-radius: 0.5rem;
+	border: 1px solid var(--secondary);
+}
+
+.table-grid .head {
+	font-weight: 500;
+}
+
+.table-grid .body {
+}
+
+.table-grid .body,
+.table-grid .body .row,
+.table-grid .row,
+.table-grid .head,
+.floating-row {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: var(--col-template);
+	grid-template-rows: var(--row-template);
+}
+
+.table-grid .body div:nth-child(4) {
+	grid-row-start: 2;
+}
+
+.table-grid .body div:nth-child(5) {
+	grid-row-start: 3;
+}
+
+.table-grid .col {
+	padding: 1rem;
+}
+
+.table-grid:not(.is-record-table) .body > .row:nth-child(odd) {
+	background-color: var(--secondary);
+}

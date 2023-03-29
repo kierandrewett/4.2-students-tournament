@@ -11,7 +11,7 @@ pub mod events;
 pub mod individuals;
 pub mod teams;
 
-fn get_data_dir() -> PathBuf {
+pub fn get_data_dir() -> PathBuf {
     home_dir().expect("Failed to find home directory")
         .join(PathBuf::from(".students_tournament"))
 }
@@ -65,6 +65,12 @@ fn init_individuals_store(application: &App) -> Store<Wry> {
     store.save().expect("Failed to save individuals store");
 
     store
+}
+
+pub fn is_data_locked() -> bool {
+    let lock_file = get_data_dir().join(PathBuf::from("data.lock"));
+
+    lock_file.exists()
 }
 
 

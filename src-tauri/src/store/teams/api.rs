@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 use serde_json::json;
 use serde_json::Value;
 use tauri::{Wry};
@@ -66,6 +68,10 @@ impl TeamsStore {
 
     pub fn create_team(&mut self, name: &str, events_ids_entered: Vec<u64>) -> Result<Value, String> {
         let all_teams = &mut self.get_all_teams();
+
+        if all_teams.len() >= 4 {
+            return Err("Cannot create any more teams. Maximum of 4 teams reached.".to_string())
+        }
 
         let data = json!({
             "id": all_teams.len() + 1,
@@ -175,6 +181,105 @@ impl TeamsStore {
                 );
             }
         }
+
+        let team_data_serialised = serde_json::to_value(team_data)
+            .expect("Failed to serialise new team data");
+
+        let _ = std::mem::replace(&mut all_teams[*team_index], team_data_serialised);        
+
+        let _ = &self.store.insert("teams".to_string(), serde_json::to_value(all_teams).unwrap());
+
+        self.save();
+
+        Ok(())
+    }
+
+    pub fn remove_player_from_team(&mut self, team_id: u64, player_id: u64) -> Result<(), std::string::String> {
+        let all_teams = &mut self.get_all_teams();
+
+        let team_by_id = self.get_team_by_id(team_id);
+        let team: &mut JsonValue = &mut match &team_by_id {
+            Ok(t) => t.to_owned(),
+            _ => {
+                return Err(format!("Team with ID '{}' does not exist.", team_id))
+            }
+        };
+
+        let team_index = &self.find_team_index_by(|t| t
+            .get("id")
+            .expect("Failed to get ID from team.")
+            .as_u64()
+            .expect("Failed to cast ID to u64.") == team_id
+        ).expect("Failed to get index of team in list.");
+
+        let team_data = team
+            .as_object_mut()
+            .unwrap();
+
+        let players_key = team_data.get_mut("players");
+
+        match players_key {
+            Some(new_players) => {
+                let new_players_list = new_players.as_array_mut().expect("Failed to cast new players as array.");
+
+                let player_index = new_players_list.iter().position(|p| p
+                    .as_object()
+                    .expect("Failed to cast player element as object.")
+                    .get("id")
+                    .expect("Failed to get ID from player element.")
+                    .as_u64()
+                    .expect("Failed to cast ID in player element as u64.") == player_id
+                ).expect("Failed to get index of player in list.");
+
+                new_players_list.remove(player_index);
+    
+                let json = serde_json::to_value(new_players_list).expect("Failed to parse new players list to json.");
+
+                team_data.insert(
+                    "players".to_string(), 
+                    json
+                );
+            },
+            None => {
+                return Err("No players on team.".to_owned())
+            }
+        }
+
+        let team_data_serialised = serde_json::to_value(team_data)
+            .expect("Failed to serialise new team data");
+
+        let _ = std::mem::replace(&mut all_teams[*team_index], team_data_serialised);        
+
+        let _ = &self.store.insert("teams".to_string(), serde_json::to_value(all_teams).unwrap());
+
+        self.save();
+
+        Ok(())
+    }
+
+    pub fn edit_team_events(&mut self, id: u64, events_ids_entered: Vec<u64>) -> Result<(), std::string::String> {
+        let all_teams = &mut self.get_all_teams();
+
+        let team_by_id = self.get_team_by_id(id);
+        let team: &mut JsonValue = &mut match &team_by_id {
+            Ok(t) => t.to_owned(),
+            _ => {
+                return Err(format!("Team with ID '{}' does not exist.", id))
+            }
+        };
+
+        let team_index = &self.find_team_index_by(|t| t
+            .get("id")
+            .expect("Failed to get ID from team.")
+            .as_u64()
+            .expect("Failed to cast ID to u64.") == id
+        ).expect("Failed to get index of team in list.");
+
+        let team_data = team
+            .as_object_mut()
+            .unwrap();
+
+        team_data.insert("events_ids_entered".to_string(), events_ids_entered.into());
 
         let team_data_serialised = serde_json::to_value(team_data)
             .expect("Failed to serialise new team data");

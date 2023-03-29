@@ -1,0 +1,48 @@
+.final-items {
+	& .btn:last-child {
+		margin-bottom: 1.5rem;
+	}
+
+	& .btn:not([disabled]) {
+		margin-inline-start: 1.5rem;
+		min-width: calc(100% - 1.5rem * 1.5) !important;
+		width: calc(100% - 1.5rem * 1.5) !important;
+	}
+}
+
+.finalise-create-app {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+
+	& > .sidebar {
+		height: calc(100% - 56px);
+	}
+
+	& > .header-bar {
+		border-top: 1px solid var(--secondary);
+		height: 56px;
+	}
+}
+
+.finalise-create-app .teams-create-app {
+	max-height: calc(100% - 56px) !important;
+}
+
+.rankings-sort-container {
+	position: relative;
+	overflow: hidden;
+}
+
+.ranking-sort-dragger {
+	position: unset !important;
+}
+
+.table-grid.is-record-table > .body.fixed-id > .row:nth-child(odd) {
+	background-color: var(--secondary);
+}
+
+.floating-row .col {
+	padding: 1rem;
+}

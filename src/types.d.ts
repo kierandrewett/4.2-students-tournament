@@ -25,8 +25,14 @@ export interface IndividualData {
 	events_ids_entered: number[];
 }
 
+export interface TeamPlayerData {
+	id: number;
+	name: string;
+}
+
 export interface TeamData {
 	id: number;
 	name: string;
 	events_ids_entered: number[];
+	players?: TeamPlayerData[];
 }
