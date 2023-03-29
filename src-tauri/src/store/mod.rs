@@ -7,9 +7,12 @@ use crate::store::events::api::EventsStore;
 use crate::store::individuals::api::IndividualsStore;
 use crate::store::teams::api::TeamsStore;
 
+use self::results::api::ResultsStore;
+
 pub mod events;
 pub mod individuals;
 pub mod teams;
+pub mod results;
 
 pub fn get_data_dir() -> PathBuf {
     home_dir().expect("Failed to find home directory")
@@ -67,31 +70,51 @@ fn init_individuals_store(application: &App) -> Store<Wry> {
     store
 }
 
+fn init_results_store(application: &App) -> Store<Wry> {
+    let mut store = StoreBuilder::new(
+        application.handle(), 
+        get_data_dir().join(PathBuf::from("results.store.json"))
+    ).build();
+
+    match store.load() {
+        Ok(_) => {},
+        Err(err) => {
+            println!("Error {}", err)
+        }
+    }
+    store.save().expect("Failed to save results store");
+
+    store
+}
+
 pub fn is_data_locked() -> bool {
     let lock_file = get_data_dir().join(PathBuf::from("data.lock"));
 
     lock_file.exists()
 }
 
-
 pub struct AllStores {
     pub events: EventsStore,
     pub teams: TeamsStore,
     pub individuals: IndividualsStore,
+    pub results: ResultsStore
 }
 
 pub fn init(application: &App) -> AllStores {
     let mut events = EventsStore { store: init_events_store(application) };
     let mut teams = TeamsStore { store: init_teams_store(application) };
     let mut individuals = IndividualsStore { store: init_individuals_store(application) };
+    let mut results = ResultsStore { store: init_results_store(application) };
 
     events.init();
     teams.init();
     individuals.init();
+    results.init();
 
     AllStores { 
         events,
         teams,
-        individuals
+        individuals,
+        results
     }
 }

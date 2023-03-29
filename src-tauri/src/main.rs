@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![feature(fn_traits)]
+#![allow(non_snake_case)]
 
 use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::File, io::Write};
 
@@ -87,7 +88,10 @@ fn main() {
             store::teams::ipc::teams__delete_team,
             store::teams::ipc::teams__add_player_to_team,
             store::teams::ipc::teams__remove_player_from_team,
-            store::teams::ipc::teams__edit_team_events
+            store::teams::ipc::teams__edit_team_events,
+            /* Results */
+            store::results::ipc::results__get_all_results,
+            store::results::ipc::results__record_event_results
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())
