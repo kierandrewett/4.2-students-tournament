@@ -16,7 +16,10 @@ fn greet(name: &str) -> String {
 
 #[tauri::command]
 fn open_devtools(window: Window) {
-    window.open_devtools();
+    #[cfg(debug_assertions)]
+    {
+        window.open_devtools();
+    }
 }
 
 #[tauri::command]
