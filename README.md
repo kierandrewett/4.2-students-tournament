@@ -4,6 +4,15 @@
 
 Written using Tauri as the desktop framework and React for the frontend.
 
+## Directory structure
+
+| Directory              | Description                                                          |
+| ---------------------- | -------------------------------------------------------------------- |
+| [src](src)             | Frontend for Students Tournament made using React.                   |
+| [src-tauri](src-tauri) | Backend for Students Tournament made using Rust/Tauri for windowing. |
+| [mockups](mockups)     | Static mockup files used during in design process.                   |
+| [pseudo](pseudo)       | Pseudocode and data structured used to aid development.              |
+
 ## Development
 
 1.  Install Rust via [rustup](https://rustup.rs).
