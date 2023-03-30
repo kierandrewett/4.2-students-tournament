@@ -17,7 +17,6 @@ tauri = { version = "1.2", features = ["dialog-all", "fs-create-dir", "fs-exists
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["std"] }
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
-xlsxwriter = "0.5.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

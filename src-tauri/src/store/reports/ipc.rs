@@ -3,7 +3,6 @@ use std::{sync::{Mutex, Arc}, collections::HashMap};
 use serde_json::Value;
 use tauri_plugin_store::JsonValue;
 use tauri::{State, Window, Manager, async_runtime::spawn_blocking};
-use xlsxwriter::{Workbook};
 
 use crate::store::{AllStores};
 
