@@ -13,6 +13,7 @@ pub mod events;
 pub mod individuals;
 pub mod teams;
 pub mod results;
+pub mod reports;
 
 pub fn get_data_dir() -> PathBuf {
     home_dir().expect("Failed to find home directory")
@@ -86,6 +87,7 @@ fn init_results_store(application: &App) -> Store<Wry> {
 
     store
 }
+
 
 pub fn is_data_locked() -> bool {
     let lock_file = get_data_dir().join(PathBuf::from("data.lock"));

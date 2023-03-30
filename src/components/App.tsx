@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Main from "../screens";
 import AdminMain from "../screens/admin";
 import { AdminFinalise } from "../screens/admin/finalise";
+import { AdminFinaliseEnd } from "../screens/admin/finalise/end";
 import Intro from "../screens/intro";
 import IntroIndividual from "../screens/intro/individual";
 import IntroIndividualHome from "../screens/intro/individual/home";
@@ -39,6 +40,7 @@ const App = () => {
 
 			<Route path={"/admin"} element={<AdminMain />} />
 			<Route path={"/admin/finalise"} element={<AdminFinalise />} />
+			<Route path={"/admin/finalise/end"} element={<AdminFinaliseEnd />} />
 			<Route path={"/"} element={<Main />} />
 		</Routes>
 	);

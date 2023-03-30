@@ -8,6 +8,7 @@ use tauri::{Wry};
 use tauri_plugin_store::{ Store, JsonValue };
 
 use crate::store::get_data_dir;
+use crate::unlock_data;
 
 use super::ResultsItem;
 
@@ -163,11 +164,7 @@ impl ResultsStore {
 
         self.save();
 
-        let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
-
-        if lock_file_path.exists() {
-            fs::remove_file(lock_file_path).expect("Failed to remove lock data.");
-        }
+        unlock_data();
 
         Ok(())
     }

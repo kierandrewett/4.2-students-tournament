@@ -115,7 +115,7 @@ input[type="radio"],
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 	min-width: 150px;
 
 	& > * {

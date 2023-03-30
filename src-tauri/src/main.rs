@@ -2,7 +2,7 @@
 #![feature(fn_traits)]
 #![allow(non_snake_case)]
 
-use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::File, io::Write};
+use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::{File, self}, io::Write};
 
 use store::get_data_dir;
 use tauri::{App, Manager, Window};
@@ -20,12 +20,21 @@ fn open_devtools(window: Window) {
 }
 
 #[tauri::command]
-fn lock_data(window: Window) {
+fn lock_data() {
     let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
 
     let mut lock_file = File::create(lock_file_path).expect("Failed to lock data.");
 
     lock_file.write_all(b"").expect("Failed to lock data.");
+}
+
+#[tauri::command]
+fn unlock_data() {
+    let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
+
+    if lock_file_path.exists() {
+        fs::remove_file(lock_file_path).expect("Failed to remove lock data.");
+    }
 }
 
 fn setup_application(application: &mut App) {
@@ -74,6 +83,7 @@ fn main() {
             greet,
             open_devtools,
             lock_data,
+            unlock_data,
             /* Events */
             store::events::ipc::events__create_event,
             store::events::ipc::events__get_all_events,
@@ -94,6 +104,8 @@ fn main() {
             store::results::ipc::results__record_event_results,
             store::results::ipc::results__mark_event_done,
             store::results::ipc::results__reset_all,
+            /* Reports */
+            store::reports::ipc::reports__create_xlsx_report,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

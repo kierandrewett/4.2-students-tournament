@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api";
 import { confirm } from "@tauri-apps/api/dialog";
 import { createDir, writeFile } from "@tauri-apps/api/fs";
 import { homeDir, resolve } from "@tauri-apps/api/path";
@@ -268,8 +269,9 @@ export const AdminFinalise = (
 			await writeFile(jsonFilePath, JSON.stringify(bigData, null, 4));
 
 			await sleep(1000);
+			await invoke("unlock_data");
 
-			setIsLoading(false);
+			navigate("/admin/finalise/end");
 		} else {
 			alert(
 				"An error occurred while generating final results: mismatch between results events amount and all events amount."

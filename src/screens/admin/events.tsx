@@ -56,7 +56,7 @@ export const AdminEvents = (
 						<th>Name</th>
 						<th>Type</th>
 						<th>Max Points</th>
-						<th>Max Participants/Teams</th>
+						<th>Required Participants/Teams</th>
 						<th>Actions</th>
 					</thead>
 					<tbody>

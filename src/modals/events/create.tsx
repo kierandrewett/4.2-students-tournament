@@ -122,7 +122,7 @@ export const CreateEventModal = ({
 								className={"field"}
 								style={{ display: values.kind == EventType.Team ? "" : "none" }}
 							>
-								<label htmlFor="maxTeams">Max Teams</label>
+								<label htmlFor="maxTeams">Required Teams</label>
 								<div className={"field-container"}>
 									<Field
 										id="maxTeams"

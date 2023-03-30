@@ -35,5 +35,6 @@ export const store = {
 	events: new IPCStore("events"),
 	teams: new IPCStore("teams"),
 	individuals: new IPCStore("individuals"),
-	results: new IPCStore("results")
+	results: new IPCStore("results"),
+	reports: new IPCStore("reports")
 };
