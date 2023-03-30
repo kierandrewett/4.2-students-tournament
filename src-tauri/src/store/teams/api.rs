@@ -257,7 +257,7 @@ impl TeamsStore {
         Ok(())
     }
 
-    pub fn edit_team_events(&mut self, id: u64, events_ids_entered: Vec<u64>) -> Result<(), std::string::String> {
+    pub fn edit_events(&mut self, id: u64, events_ids_entered: Vec<u64>) -> Result<(), std::string::String> {
         let all_teams = &mut self.get_all_teams();
 
         let team_by_id = self.get_team_by_id(id);

@@ -46,7 +46,8 @@ const IntroTeamsEditEvents = () => {
 							initialValues={
 								{
 									team_id: (location.state && location.state.team_id) || "",
-									eventsIdsEntered: []
+									eventsIdsEntered:
+										(location.state && location.state.eventsIdsEntered) || []
 								} as {
 									[key: string]: any;
 									team_id: string;
@@ -55,7 +56,7 @@ const IntroTeamsEditEvents = () => {
 							}
 							onSubmit={async (values, helpers) => {
 								store.teams
-									.call<TeamData>("edit_team_events", {
+									.call<TeamData>("edit_events", {
 										teamId: values.team_id,
 										eventsIdsEntered: values.eventsIdsEntered
 									})

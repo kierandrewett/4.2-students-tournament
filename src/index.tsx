@@ -28,4 +28,8 @@ registerKeybinds();
 window.store = tmStore.store;
 
 // Disable context menus
-document.documentElement.addEventListener("contextmenu", (e) => e.preventDefault());
+document.documentElement.addEventListener("contextmenu", (e: any) => {
+	if ((e.target as HTMLElement).tagName !== "INPUT") {
+		e.preventDefault();
+	}
+});

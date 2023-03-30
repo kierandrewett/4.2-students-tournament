@@ -39,6 +39,18 @@ impl IndividualsStore {
         }
     }
 
+    pub fn find_individual_index_by<T: for<'a> FnMut(&'a JsonValue) -> bool>(&mut self, predicate: T) -> Result<usize, &str> {
+        let all_individuals = self.get_all_individuals();
+
+        let binding = all_individuals.to_vec();
+        let result = binding.iter().clone().position(predicate);
+
+        match result {
+            Some(event) => Ok(event.to_owned().to_owned()),
+            None => Err("Failed to find individual using predicate"),
+        }
+    }
+
     pub fn get_individual_by_id(&mut self, id: u64) -> Result<JsonValue, String> {
         match self.find_individual_by(|x| x.get("id")
             .expect("Failed to get ID in get_individual_by_id for iterator")
@@ -96,6 +108,42 @@ impl IndividualsStore {
             ).collect::<_>();
 
         let _ = &self.store.insert("individuals".to_string(), serde_json::to_value(filtered).unwrap());
+
+        self.save();
+
+        Ok(())
+    }
+
+    pub fn edit_events(&mut self, id: u64, events_ids_entered: Vec<u64>) -> Result<(), std::string::String> {
+        let all_individuals = &mut self.get_all_individuals();
+
+        let individual_by_id = self.get_individual_by_id(id);
+        let individual: &mut JsonValue = &mut match &individual_by_id {
+            Ok(t) => t.to_owned(),
+            _ => {
+                return Err(format!("Individual with ID '{}' does not exist.", id))
+            }
+        };
+
+        let individual_index = &self.find_individual_index_by(|t| t
+            .get("id")
+            .expect("Failed to get ID from individual.")
+            .as_u64()
+            .expect("Failed to cast ID to u64.") == id
+        ).expect("Failed to get index of individual in list.");
+
+        let individual_data = individual
+            .as_object_mut()
+            .unwrap();
+
+        individual_data.insert("events_ids_entered".to_string(), events_ids_entered.into());
+
+        let individual_data_serialised = serde_json::to_value(individual_data)
+            .expect("Failed to serialise new individual data");
+
+        let _ = std::mem::replace(&mut all_individuals[*individual_index], individual_data_serialised);        
+
+        let _ = &self.store.insert("individuals".to_string(), serde_json::to_value(all_individuals).unwrap());
 
         self.save();
 

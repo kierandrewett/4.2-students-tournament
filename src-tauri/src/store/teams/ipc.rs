@@ -84,7 +84,7 @@ pub fn teams__remove_player_from_team(
 }
 
 #[tauri::command]
-pub fn teams__edit_team_events(
+pub fn teams__edit_events(
     window: Window,
     stores: State<'_, Arc<Mutex<AllStores>>>, 
     team_id: u64,
@@ -97,7 +97,7 @@ pub fn teams__edit_team_events(
         false => {}
     }
 
-    match stores.lock().unwrap().teams.edit_team_events(team_id, events_ids_entered) {
+    match stores.lock().unwrap().teams.edit_events(team_id, events_ids_entered) {
         Ok(res) => {
             window.emit_all("teams__on_team_created", res.clone()).expect("Failed to dispatch event");
             Ok(res.clone())

@@ -95,13 +95,14 @@ fn main() {
             store::individuals::ipc::individuals__create_individual,
             store::individuals::ipc::individuals__get_all_individuals,
             store::individuals::ipc::individuals__delete_individual,
+            store::individuals::ipc::individuals__edit_events,
             /* Teams */
             store::teams::ipc::teams__create_team,
             store::teams::ipc::teams__get_all_teams,
             store::teams::ipc::teams__delete_team,
             store::teams::ipc::teams__add_player_to_team,
             store::teams::ipc::teams__remove_player_from_team,
-            store::teams::ipc::teams__edit_team_events,
+            store::teams::ipc::teams__edit_events,
             /* Results */
             store::results::ipc::results__get_all_results,
             store::results::ipc::results__record_event_results,

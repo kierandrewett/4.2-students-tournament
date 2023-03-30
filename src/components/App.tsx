@@ -7,6 +7,7 @@ import { AdminFinalise } from "../screens/admin/finalise";
 import { AdminFinaliseEnd } from "../screens/admin/finalise/end";
 import Intro from "../screens/intro";
 import IntroIndividual from "../screens/intro/individual";
+import IntroIndividualEditEvents from "../screens/intro/individual/edit_events";
 import IntroIndividualHome from "../screens/intro/individual/home";
 import IntroIndividualSignup from "../screens/intro/individual/signup";
 import IntroTeam from "../screens/intro/team";
@@ -32,6 +33,10 @@ const App = () => {
 			<Route path={"/intro/individual"} element={<IntroIndividual />}>
 				<Route path={"/intro/individual"} element={<IntroIndividualHome />} />
 				<Route path={"/intro/individual/signup"} element={<IntroIndividualSignup />} />
+				<Route
+					path={"/intro/individual/edit_events"}
+					element={<IntroIndividualEditEvents />}
+				/>
 			</Route>
 			<Route path={"/intro/team"} element={<IntroTeam />} />
 			<Route path={"/intro/team/create"} element={<IntroTeamsCreate />} />

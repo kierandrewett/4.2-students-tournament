@@ -94,3 +94,8 @@
 .overall-ranking-items .btn[disabled] + .btn {
 	font-weight: 800;
 }
+
+.overall-ranking-items .btn:not([disabled]) {
+	border-radius: 1rem;
+	text-align: left;
+}

@@ -97,7 +97,10 @@ export const AdminTeams = (
 											className={"btn primary small"}
 											onClick={(el: any) => {
 												navigate("/intro/team/edit_events", {
-													state: { team_id: e.id }
+													state: {
+														team_id: e.id,
+														eventsIdsEntered: e.events_ids_entered
+													}
 												});
 											}}
 										>

@@ -75,7 +75,21 @@ export const AdminIndividuals = (
 										.map((id) => allEvents.find((e) => e.id == id)?.name)
 										.join(", ")}
 								</td>
-								<td className={"small"}>
+								<td className={"small button-horiz"}>
+									<button
+										className={"btn primary small"}
+										onClick={(el: any) => {
+											navigate("/intro/individual/edit_events", {
+												state: {
+													individual_id: e.id,
+													eventsIdsEntered: e.events_ids_entered
+												}
+											});
+										}}
+									>
+										Edit events
+									</button>
+
 									<button
 										className={"btn danger small"}
 										onClick={(el: any) => {
