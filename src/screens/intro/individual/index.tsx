@@ -27,7 +27,7 @@ const IntroIndividual = () => {
 		const getAllPromises = () => Promise.all([getAllIndividuals()]);
 
 		getAllPromises().then((_) => {
-			store.events.on("individual_created", getAllIndividuals);
+			store.individuals.on("individual_created", getAllIndividuals);
 		});
 
 		window.addEventListener("focus", getAllPromises);

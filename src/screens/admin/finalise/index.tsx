@@ -262,6 +262,8 @@ export const AdminFinalise = (
 				generatedDirName
 			);
 
+			sessionStorage.setItem("latest_data_dir", dataDir);
+
 			await createDir(dataDir, { recursive: true });
 
 			const jsonFilePath = await resolve(dataDir, "generated.json");

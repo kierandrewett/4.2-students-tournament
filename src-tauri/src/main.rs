@@ -2,7 +2,7 @@
 #![feature(fn_traits)]
 #![allow(non_snake_case)]
 
-use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::{File, self}, io::Write};
+use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::{File, self, metadata}, io::Write, process::Command};
 
 use store::get_data_dir;
 use tauri::{App, Manager, Window, Size, LogicalSize};
@@ -34,6 +34,34 @@ fn unlock_data() {
 
     if lock_file_path.exists() {
         fs::remove_file(lock_file_path).expect("Failed to remove lock data.");
+    }
+}
+
+// https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169
+#[tauri::command]
+fn open_folder(path: String) {
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("explorer")
+            .args(["/select,", &path]) // The comma after select is not a typo
+            .spawn()
+            .unwrap();
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        Command::new("xdg-open")
+            .arg(&path)
+            .spawn()
+            .unwrap();
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open")
+            .args(["-R", &path])
+            .spawn()
+            .unwrap();
     }
 }
 
@@ -87,6 +115,7 @@ fn main() {
             open_devtools,
             lock_data,
             unlock_data,
+            open_folder,
             /* Events */
             store::events::ipc::events__create_event,
             store::events::ipc::events__get_all_events,

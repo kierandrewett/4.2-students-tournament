@@ -99,3 +99,113 @@
 	border-radius: 1rem;
 	text-align: left;
 }
+
+.final-end-app {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.final-end-app .header-bar {
+	flex: 1;
+	border-top: 1px solid var(--secondary);
+}
+
+.final-end-app .final-end-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: auto;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 4rem;
+	position: relative;
+	gap: 3rem;
+	padding-top: 2rem;
+}
+
+.winner-podium {
+	display: flex;
+	flex-direction: row;
+	gap: 3rem;
+	padding-block: 3rem;
+	min-height: 200px;
+}
+
+.winner-table .row:nth-child(1) > .col:first-child,
+.winner-podium > div:nth-child(2) .podium .position,
+.winner-table .row .col[data-type-rank="1"] {
+	background-color: var(--gold) !important;
+	color: white;
+	font-weight: 600;
+}
+
+.winner-podium > div:nth-child(2) .podium {
+	transform: scale(1.4);
+	transform-origin: bottom;
+}
+
+.winner-table .row:nth-child(2) > .col:first-child,
+.winner-podium > div:nth-child(1) .podium .position,
+.winner-table .row .col[data-type-rank="2"] {
+	background-color: var(--silver) !important;
+	color: white;
+	font-weight: 600;
+}
+
+.winner-table .row:nth-child(3) > .col:first-child,
+.winner-podium > div:nth-child(3) .podium .position,
+.winner-table .row .col[data-type-rank="3"] {
+	background-color: var(--bronze) !important;
+	color: white;
+	font-weight: 600;
+}
+
+.winner-podium .podium {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	width: 200px;
+	max-width: 200px;
+}
+
+.winner-podium .podium .position {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 999px;
+	font-size: 3rem;
+}
+
+.winner-podium .podium .details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+
+	.name {
+		font-size: 1.5rem;
+		font-weight: 600;
+	}
+}
+
+@media print {
+	.header-bar,
+	.winner-podium {
+		display: none;
+	}
+
+	.final-end-app {
+		height: 100000vh;
+	}
+}
+
+#print_table {
+	display: none;
+}

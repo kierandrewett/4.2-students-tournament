@@ -81,14 +81,6 @@
 	grid-template-rows: var(--row-template);
 }
 
-.table-grid .body .row .col:nth-child(4) {
-	grid-row-start: 2;
-}
-
-.table-grid .body .row .col:nth-child(5) {
-	grid-row-start: 3;
-}
-
 .table-grid .col {
 	padding: 1rem;
 	z-index: 6;

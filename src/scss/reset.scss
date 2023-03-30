@@ -115,3 +115,7 @@ input[type="checkbox"] {
 	height: 1rem;
 	appearance: auto;
 }
+
+*:focus-visible {
+	outline: 2px solid var(--primary);
+}

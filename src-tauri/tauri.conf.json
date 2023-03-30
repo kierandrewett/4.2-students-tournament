@@ -28,6 +28,7 @@
                 "exists": true,
                 "createDir": true,
                 "writeFile": true,
+                "readFile": true,
                 "scope": [
                     "$HOME/.students_tournament/**/*"
                 ]
