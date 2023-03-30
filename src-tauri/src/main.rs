@@ -5,7 +5,7 @@
 use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::{File, self}, io::Write};
 
 use store::get_data_dir;
-use tauri::{App, Manager, Window};
+use tauri::{App, Manager, Window, Size, LogicalSize};
 
 mod store;
 
@@ -58,6 +58,9 @@ fn setup_application(application: &mut App) {
         // adapt sleeping time to be long enough
         sleep(Duration::from_millis(500));
         window.show().expect("Failed to show Tauri window");
+
+        window.set_size(Size::Logical(LogicalSize { width: 1280.0, height: 720.0 })).unwrap();
+        window.set_size(Size::Logical(LogicalSize { width: 1280.0, height: 720.0 })).unwrap();
 
         if stores.lock().unwrap().events.get_all_events().len() == 0 {
             window.eval("alert(
