@@ -11,6 +11,14 @@ import { store } from "../../../store";
 import { EventData, EventType, IndividualData, ResultData, TeamData } from "../../../types.d";
 import { AdminFinaliseRecordEvent } from "./record_event";
 
+const sleep = (ms: number) => {
+	return new Promise((r) => {
+		setTimeout(() => {
+			r(true);
+		}, ms);
+	});
+};
+
 export const AdminFinalise = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
@@ -23,6 +31,8 @@ export const AdminFinalise = (
 	const [allIndividuals, setAllIndividuals] = React.useState<IndividualData[]>([]);
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
 	const [allResults, setAllResults] = React.useState<ResultData[]>([]);
+
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const getAllTeams = async () => {
 		return store.teams.call<TeamData[]>("get_all_teams").then((res) => {
@@ -150,6 +160,8 @@ export const AdminFinalise = (
 	}, [completedTabs]);
 
 	const onFinalResultsClick = async () => {
+		setIsLoading(true);
+
 		if (allResults.map((e) => e.event_id).length == allEvents.length) {
 			const frozenResults = [...allResults];
 
@@ -193,9 +205,11 @@ export const AdminFinalise = (
 						});
 					} else {
 						alert("Data on disk no longer exists!");
+						setIsLoading(false);
 					}
 				} else {
 					alert("Failed to find event relating to current result!");
+					setIsLoading(false);
 				}
 			}
 
@@ -252,16 +266,27 @@ export const AdminFinalise = (
 			const jsonFilePath = await resolve(dataDir, "generated.json");
 
 			await writeFile(jsonFilePath, JSON.stringify(bigData, null, 4));
+
+			await sleep(1000);
+
+			setIsLoading(false);
 		} else {
 			alert(
 				"An error occurred while generating final results: mismatch between results events amount and all events amount."
 			);
+			setIsLoading(false);
 		}
 	};
 
 	return (
 		<div className={"finalise-app"}>
-			<div className={"finalise-create-app"}>
+			<div
+				className={"finalise-create-app"}
+				style={{
+					pointerEvents: isLoading ? "none" : "auto",
+					opacity: isLoading ? 0.5 : 1
+				}}
+			>
 				<Sidebar
 					title={() => `Events (${new Set(completedTabs).size}/${tabs.length - 2}) `}
 					exit={async (el: any) => {
@@ -301,10 +326,10 @@ export const AdminFinalise = (
 					cancelText={"Record the results for each event and mark them all as done."}
 					cancelProps={{ className: "btn", style: { marginInlineStart: "0.5rem" } }}
 					ok={() => onFinalResultsClick()}
-					okText={"Create final results"}
+					okText={isLoading ? "Loading..." : "Create final results"}
 					okProps={{
 						className: "btn primary small",
-						disabled: !(new Set(completedTabs).size >= tabs.length - 2)
+						disabled: !(new Set(completedTabs).size >= tabs.length - 2) || isLoading
 					}}
 				/>
 			</div>
