@@ -20,7 +20,7 @@ pub fn results__record_event_results(
     window: Window,
     stores: State<'_, Arc<Mutex<AllStores>>>, 
     event_id: u64,
-    results: Vec<ResultsItem>
+    results: Vec<ResultsItem>,
 ) -> Result<Value, std::string::String> {
     match stores.lock().unwrap().results.record_event_results(event_id, results) {
         Ok(res) => {
@@ -31,4 +31,14 @@ pub fn results__record_event_results(
             Err(err)
         }
     }
+}
+
+#[tauri::command]
+pub fn results__mark_event_done(
+    window: Window,
+    stores: State<'_, Arc<Mutex<AllStores>>>, 
+    event_id: u64,
+    done: bool
+) -> Result<(), std::string::String> {
+    stores.lock().unwrap().results.mark_event_done(event_id, done)
 }

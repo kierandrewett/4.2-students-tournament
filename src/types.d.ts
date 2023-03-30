@@ -36,3 +36,13 @@ export interface TeamData {
 	events_ids_entered: number[];
 	players?: TeamPlayerData[];
 }
+
+export interface ResultData {
+	event_id: number;
+	done: boolean;
+	results: {
+		participant_id: number;
+		points: number;
+		position: number;
+	}[];
+}

@@ -10,6 +10,13 @@
 	}
 }
 
+.finalise-app {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+}
+
 .finalise-create-app {
 	display: flex;
 	flex-direction: column;
@@ -68,4 +75,22 @@
 .record-table-container {
 	min-height: min-content;
 	margin: auto;
+}
+
+.finalise-ranking-sidebar {
+	flex: 1;
+	min-width: 300px;
+	border-left: 1px solid var(--secondary);
+}
+
+.finalise-ranking-sidebar .sidebar-content {
+	display: none;
+}
+
+.overall-ranking-items .btn:last-child {
+	margin-bottom: 1.5rem;
+}
+
+.overall-ranking-items .btn[disabled] + .btn {
+	font-weight: 800;
 }

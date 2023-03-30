@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import React from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 import Main from "../screens";
 import AdminMain from "../screens/admin";
@@ -12,8 +13,15 @@ import IntroTeamsCreate from "../screens/intro/team/create";
 import IntroTeamsEditEvents from "../screens/intro/team/edit_events";
 import IntroTeamsJoin from "../screens/intro/team/join";
 import IntroWhoAmI from "../screens/intro/whoami";
+import { isStoreLocked } from "../store";
 
 const App = () => {
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		isStoreLocked().then((_) => navigate("/admin/finalise"));
+	});
+
 	return (
 		<Routes>
 			<Route path={"/intro"} element={<Intro />} />

@@ -1,5 +1,5 @@
 import { arrayMoveImmutable } from "array-move";
-import React, { RefObject } from "react";
+import React from "react";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import HeaderBar from "../../../components/HeaderBar";
 import { calculatePointsForRank } from "../../../scoring";
@@ -17,17 +17,32 @@ const RankingsSortItem = SortableElement<RSIProps>(({ event, value, i, items }: 
 	const [points, setPoints] = React.useState<any>("");
 
 	React.useEffect(() => {
+		const calculatedPoints = calculatePointsForRank({ event, position: i + 1 });
+
+		let int: any;
+
 		if (items.length <= 1) {
-			setPoints(calculatePointsForRank({ event, position: i + 1 }));
+			setPoints(calculatedPoints);
 		} else {
 			setPoints("...");
 
 			let int = setTimeout(() => {
-				setPoints(calculatePointsForRank({ event, position: i + 1 }));
+				setPoints(calculatedPoints);
 			}, 200);
-
-			return () => clearTimeout(int);
 		}
+
+		store.results.call("record_event_results", {
+			eventId: event.id,
+			results: items.map((item, indx) => ({
+				participant_id: item.id,
+				position: indx + 1,
+				points: calculatePointsForRank({ event, position: indx + 1 })
+			}))
+		});
+
+		return () => {
+			int && clearTimeout(int);
+		};
 	}, [items]);
 
 	return (
@@ -51,11 +66,18 @@ const RankingsSortItem = SortableElement<RSIProps>(({ event, value, i, items }: 
 	);
 });
 
-type RSCProps = { event: EventData; items: TeamData[] | IndividualData[] };
+type RSCProps = { event: EventData; items: TeamData[] | IndividualData[]; isDone: boolean };
 
-const RankingsSortContainer = SortableContainer<RSCProps>(({ event, items }: RSCProps) => {
+const RankingsSortContainer = SortableContainer<RSCProps>(({ event, items, isDone }: RSCProps) => {
 	return (
-		<div className={"body"} style={{ position: "relative" }}>
+		<div
+			className={"body"}
+			style={{
+				position: "relative",
+				pointerEvents: isDone ? "none" : "auto",
+				opacity: isDone ? 0.5 : 1
+			}}
+		>
 			{items.map((value, index) => (
 				<RankingsSortItem
 					key={value.id}
@@ -74,12 +96,12 @@ const Rankings = ({
 	participants,
 	setParticipants,
 	event,
-	containerRef
+	isDone
 }: {
 	participants: TeamData[] | IndividualData[];
 	setParticipants: any;
 	event: EventData;
-	containerRef: RefObject<HTMLElement>;
+	isDone: boolean;
 }) => {
 	const [sort, setSort] = React.useState(participants);
 
@@ -103,6 +125,7 @@ const Rankings = ({
 			lockToContainerEdges={true}
 			lockOffset={10}
 			helperClass={"floating-row"}
+			isDone={isDone}
 		/>
 	);
 };
@@ -207,7 +230,7 @@ export const AdminFinaliseRecordEvent = ({
 							}
 						>
 							{[...Array(participants.length)].map((_, index) => (
-								<div className={"row"}>
+								<div className={"row"} key={index}>
 									<div className="col">{index + 1}</div>
 									<div className="col"></div>
 									<div className="col"></div>
@@ -219,7 +242,7 @@ export const AdminFinaliseRecordEvent = ({
 							participants={participants}
 							setParticipants={setParticipants}
 							event={event}
-							containerRef={tableRef}
+							isDone={completedTabs.includes(id)}
 						/>
 					</div>
 				</div>

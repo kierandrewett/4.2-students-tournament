@@ -91,7 +91,8 @@ fn main() {
             store::teams::ipc::teams__edit_team_events,
             /* Results */
             store::results::ipc::results__get_all_results,
-            store::results::ipc::results__record_event_results
+            store::results::ipc::results__record_event_results,
+            store::results::ipc::results__mark_event_done,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

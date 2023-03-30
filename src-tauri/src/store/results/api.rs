@@ -70,20 +70,30 @@ impl ResultsStore {
         let all_results = &mut self.get_all_results();
 
         let result_by_event_id = self.get_result_by_event_id(event_id);
+
+        let mut does_result_exist = true;
+
         let result: &mut JsonValue = &mut match &result_by_event_id {
             Ok(t) => t.to_owned(),
-            _ => json!({
-                "event_id": event_id,
-                "results": results
-            })
+            _ => {
+                does_result_exist = false;
+                json!({
+                    "event_id": event_id,
+                    "results": results
+                })
+            }
         };
 
-        let result_index = &self.find_result_index_by(|t| t
-            .get("event_id")
-            .expect("Failed to get ID from result.")
-            .as_u64()
-            .expect("Failed to cast ID to u64.") == event_id
-        ).expect("Failed to get index of result in list.");
+        let mut result_index = all_results.len();
+
+        if does_result_exist {
+            result_index = self.find_result_index_by(|t| t
+                .get("event_id")
+                .expect("Failed to get ID from result.")
+                .as_u64()
+                .expect("Failed to cast ID to u64.") == event_id
+            ).expect("Failed to get result index.");
+        }
 
         let result_data = result
             .as_object_mut()
@@ -94,7 +104,11 @@ impl ResultsStore {
         let result_data_serialised = serde_json::to_value(&result_data)
             .expect("Failed to serialise new result data");
 
-        let _ = std::mem::replace(&mut all_results[*result_index], result_data_serialised);        
+        if all_results.get(result_index).is_some() {
+            let _ = std::mem::replace(&mut all_results[result_index], result_data_serialised); 
+        } else {
+            all_results.insert(result_index, result_data_serialised);
+        }
 
         let _ = &self.store.insert("results".to_string(), serde_json::to_value(all_results).unwrap());
 
@@ -102,5 +116,41 @@ impl ResultsStore {
 
         Ok(serde_json::to_value(&result_data)
             .expect("Failed to serialise new result data"))
+    }
+
+    pub fn mark_event_done(&mut self, event_id: u64, done: bool) -> Result<(), String> {
+        let all_results = &mut self.get_all_results();
+
+        let result_by_event_id = self.get_result_by_event_id(event_id);
+
+        let result: &mut JsonValue = &mut match &result_by_event_id {
+            Ok(t) => t.to_owned(),
+            _ => {
+                return Err(format!("Event with ID '{}' does not exist.", event_id))
+            }
+        };
+
+        let result_index = self.find_result_index_by(|t| t
+                .get("event_id")
+                .expect("Failed to get ID from result.")
+                .as_u64()
+                .expect("Failed to cast ID to u64.") == event_id
+            ).expect("Failed to get result index.");
+
+        let result_data = result
+            .as_object_mut()
+            .unwrap();
+
+        result_data.insert("done".to_string(), serde_json::Value::Bool(done));
+
+        let result_data_serialised = serde_json::to_value(&result_data)
+            .expect("Failed to serialise new result data");
+
+        let _ = std::mem::replace(&mut all_results[result_index], result_data_serialised); 
+        let _ = &self.store.insert("results".to_string(), serde_json::to_value(all_results).unwrap());
+
+        self.save();
+
+        Ok(())
     }
 }

@@ -23,6 +23,13 @@
             "path": {
                 "all": true
             },
+            "fs": {
+                "all": false,
+                "exists": true,
+                "scope": [
+                    "$HOME/.students_tournament/*"
+                ]
+            },
             "window": {
                 "all": false,
                 "close": true,
@@ -32,7 +39,8 @@
                 "minimize": true,
                 "unmaximize": true,
                 "unminimize": true,
-                "startDragging": true
+                "startDragging": true,
+                "setSize": true
             }
         },
         "bundle": {

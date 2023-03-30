@@ -1,10 +1,18 @@
 import { invoke } from "@tauri-apps/api";
 import { EventCallback, listen } from "@tauri-apps/api/event";
+import { exists } from "@tauri-apps/api/fs";
 import { homeDir, resolve } from "@tauri-apps/api/path";
 
 export const getStorePath = async (store: string) => {
 	const home = await homeDir();
 	return resolve(home, ".students_tournament", `${store}.store.json`);
+};
+
+export const isStoreLocked = async () => {
+	const home = await homeDir();
+	const lockFile = await resolve(home, ".students_tournament", `data.lock`);
+
+	return exists(lockFile);
 };
 
 class IPCStore {
