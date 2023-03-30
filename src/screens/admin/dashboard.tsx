@@ -74,12 +74,12 @@ export const AdminDashboard = (
 	};
 
 	const shouldShowRankingInfo = () => {
-		const totalTeamPlayers = allTeams
+		const totalTeamPlayers = (allTeams || [])
 			.map(
 				(prev: any, curr: any) => (curr.players || []).length + (prev.players || []).length
 			)
-			.reduce((a, b) => a + b);
-		const totalIndividuals = allIndividuals.length;
+			.reduce((a, b) => a + b, 0);
+		const totalIndividuals = (allIndividuals || []).length;
 
 		return [totalTeamPlayers, totalIndividuals];
 	};
@@ -102,10 +102,9 @@ export const AdminDashboard = (
 						Clicking <b>Finalise tournament</b> will end the tournament and allow you to
 						input the rankings of each team or player in their respective events.
 					</p>
-					{allTeams.length &&
-					(shouldShowRankingInfo()[0] < 20 ||
-						shouldShowRankingInfo()[1] < 5 ||
-						getAllEventsWithMinimalNumbers().length) ? (
+					{shouldShowRankingInfo()[0] < 20 ||
+					shouldShowRankingInfo()[1] < 5 ||
+					getAllEventsWithMinimalNumbers().length ? (
 						<>
 							<p>
 								This section will be available once all{" "}
@@ -113,7 +112,18 @@ export const AdminDashboard = (
 								<b>5 individuals have registered</b>.
 							</p>
 							<h4>Requirements:</h4>
-							{shouldShowRankingInfo()[0] < 20 && (
+							{shouldShowRankingInfo()[0] < 20 ? (
+								<>
+									<p>
+										<strong style={{ color: "var(--warning)" }}>
+											4 teams with 5 members need to be registered.
+										</strong>
+									</p>
+								</>
+							) : (
+								<></>
+							)}
+							{shouldShowRankingInfo()[0] < 20 && shouldShowRankingInfo()[0] >= 5 && (
 								<>
 									<p>
 										<strong style={{ color: "var(--warning)" }}>
@@ -121,46 +131,61 @@ export const AdminDashboard = (
 										</strong>
 									</p>
 									<ul>
-										{allTeams.map((t) => (
-											<>
-												<li
-													key={t.id}
-													style={{
-														color:
-															(t.players || []).length !== 5
-																? "var(--warning)"
-																: "",
-														fontWeight:
-															(t.players || []).length !== 5
-																? 700
-																: ""
-													}}
-												>
-													{t.name} {` (${(t.players || []).length}/5)`}
-												</li>
-												<ul
-													key={t.id + `-list`}
-													style={{ marginInlineStart: "2rem" }}
-												>
-													{[
-														...(t.players || []),
-														...new Array(5 - (t.players || []).length)
-													].map((p) => {
-														return (
-															!p && (
-																<li>
-																	<b>Empty place</b>
-																</li>
+										{allTeams
+											.concat([...Array(5)])
+											.splice(allTeams.length)
+											.map((t, index) => (
+												<>
+													<li
+														key={t ? t.id : index}
+														style={{
+															color:
+																!t ||
+																(t ? t.players || [] : [])
+																	.length !== 5
+																	? "var(--warning)"
+																	: "",
+															fontWeight:
+																!t ||
+																(t ? t.players || [] : [])
+																	.length !== 5
+																	? 700
+																	: ""
+														}}
+													>
+														{t
+															? `${t.name} (${
+																	(t.players || []).length
+															  }/5)`
+															: `Team`}
+													</li>
+													<ul
+														key={(t ? t.id : index) + `-list`}
+														style={{ marginInlineStart: "2rem" }}
+													>
+														{[
+															...(t ? t.players || [] : []),
+															...new Array(
+																5 -
+																	(t ? t.players || [] : [])
+																		.length
 															)
-														);
-													})}
-												</ul>
-											</>
-										))}
+														].map((p) => {
+															return (
+																!p && (
+																	<li>
+																		<b>Empty place</b>
+																	</li>
+																)
+															);
+														})}
+													</ul>
+												</>
+											))}
 									</ul>
 								</>
 							)}
-							{shouldShowRankingInfo()[1] < 5 && (
+							{shouldShowRankingInfo()[1] < 5 ? (
 								<>
 									<p>
 										<strong style={{ color: "var(--warning)" }}>
@@ -169,8 +194,10 @@ export const AdminDashboard = (
 										</strong>
 									</p>
 								</>
+							) : (
+								<></>
 							)}
-							{getAllEventsWithMinimalNumbers().length && (
+							{getAllEventsWithMinimalNumbers().length ? (
 								<>
 									<p>
 										<strong style={{ color: "var(--warning)" }}>
@@ -193,6 +220,8 @@ export const AdminDashboard = (
 										))}
 									</ul>
 								</>
+							) : (
+								<></>
 							)}
 						</>
 					) : (
@@ -205,10 +234,9 @@ export const AdminDashboard = (
 								className={"btn primary"}
 								disabled={
 									!!(
-										allTeams.length &&
-										(shouldShowRankingInfo()[0] < 20 ||
-											shouldShowRankingInfo()[1] < 5 ||
-											getAllEventsWithMinimalNumbers().length)
+										shouldShowRankingInfo()[0] < 20 ||
+										shouldShowRankingInfo()[1] < 5 ||
+										getAllEventsWithMinimalNumbers().length
 									)
 								}
 								onClick={(el: any) => {
