@@ -190,11 +190,16 @@ export const AdminFinaliseRecordEvent = ({
 
 						let next = state.tabs[state.tabs.findIndex((t) => t.id == tabSelected) + 1];
 
-						if (!next.id.startsWith("ev-")) {
-							next = state.tabs[state.tabs.findIndex((t) => t.id == tabSelected) + 2];
-						}
+						if (next) {
+							if (!next.id.startsWith("ev-")) {
+								next =
+									state.tabs[
+										state.tabs.findIndex((t) => t.id == tabSelected) + 2
+									];
+							}
 
-						setTabSelected(next.id);
+							setTabSelected(next.id);
+						}
 					}
 				}}
 				okText={completedTabs.includes(id) ? "Unmark as done" : "Mark event as done"}

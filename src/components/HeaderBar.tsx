@@ -1,4 +1,5 @@
 import { BackIcon } from "./icons/Back";
+import { CloseIcon } from "./icons/Close";
 
 const HeaderBar = ({
 	title,
@@ -11,7 +12,9 @@ const HeaderBar = ({
 	goBack,
 	goBackProps,
 	goForward,
-	goForwardProps
+	goForwardProps,
+	exit,
+	exitProps
 }: {
 	title?: string | (() => any);
 	cancel?: (...rest: any) => any;
@@ -30,11 +33,19 @@ const HeaderBar = ({
 	goForward?: (...rest: any) => any;
 	goBackProps?: any;
 	goForwardProps?: any;
+	exit?: (...rest: any) => any;
+	exitProps?: any;
 }) => {
 	return (
 		<header className={"header-bar"}>
 			<div className={"header-bar-container"}>
 				<div className={"header-bar-button-container"}>
+					{exit && (
+						<button className={"btn is-icon"} onClick={exit} {...(exitProps || {})}>
+							<CloseIcon />
+						</button>
+					)}
+
 					{cancel && (
 						<button
 							className={"btn secondary"}

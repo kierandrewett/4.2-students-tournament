@@ -55,6 +55,8 @@ const Sidebar = ({
 	goBackProps,
 	goForward,
 	goForwardProps,
+	exit,
+	exitProps,
 	content,
 	state,
 	tabs,
@@ -63,10 +65,12 @@ const Sidebar = ({
 	animatedTabs
 }: {
 	title?: string | (() => any);
-	goBack?: () => any;
+	goBack?: (...rest: any) => any;
 	goBackProps?: any;
-	goForward?: () => any;
+	goForward?: (...rest: any) => any;
 	goForwardProps?: any;
+	exit?: (...rest: any) => any;
+	exitProps?: any;
 	content?: any;
 	state: [string, Dispatch<SetStateAction<string>>];
 	tabs: Tab[];
@@ -85,6 +89,8 @@ const Sidebar = ({
 					goBackProps={goBackProps}
 					goForward={goForward}
 					goForwardProps={goForwardProps}
+					exit={exit}
+					exitProps={exitProps}
 				/>
 
 				<div className={["sidebar-items", classNames?.items || ""].join(" ")}>

@@ -1,9 +1,13 @@
+use std::fs;
 use std::ops::Index;
+use std::path::PathBuf;
 
 use serde_json::json;
 use serde_json::Value;
 use tauri::{Wry};
 use tauri_plugin_store::{ Store, JsonValue };
+
+use crate::store::get_data_dir;
 
 use super::ResultsItem;
 
@@ -150,6 +154,20 @@ impl ResultsStore {
         let _ = &self.store.insert("results".to_string(), serde_json::to_value(all_results).unwrap());
 
         self.save();
+
+        Ok(())
+    }
+
+    pub fn reset_all(&mut self) -> Result<(), ()> {
+        let _ = &self.store.insert("results".to_string(), serde_json::Value::Array(vec![]));
+
+        self.save();
+
+        let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
+
+        if lock_file_path.exists() {
+            fs::remove_file(lock_file_path).expect("Failed to remove lock data.");
+        }
 
         Ok(())
     }

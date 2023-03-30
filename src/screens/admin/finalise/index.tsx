@@ -1,3 +1,6 @@
+import { confirm } from "@tauri-apps/api/dialog";
+import { createDir, writeFile } from "@tauri-apps/api/fs";
+import { homeDir, resolve } from "@tauri-apps/api/path";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -54,6 +57,7 @@ export const AdminFinalise = (
 		});
 
 		appWindow.setSize(new LogicalSize(1280, 720));
+		appWindow.setMinSize(new LogicalSize(1280, 720));
 	}, []);
 
 	const [completedTabs, setCompletedTabs] = React.useState<string[]>([]);
@@ -145,11 +149,134 @@ export const AdminFinalise = (
 		}
 	}, [completedTabs]);
 
+	const onFinalResultsClick = async () => {
+		if (allResults.map((e) => e.event_id).length == allEvents.length) {
+			const frozenResults = [...allResults];
+
+			await getAllResults();
+			const freshResults = [...allResults];
+
+			const bigData: any = {
+				events: [],
+				results: {
+					teams: [],
+					individuals: []
+				}
+			};
+
+			for (const result of frozenResults) {
+				const event = allEvents.find((e) => e.id == result.event_id);
+
+				if (event) {
+					const storedData = freshResults.find((r) => r.event_id == result.event_id);
+
+					if (storedData) {
+						const participants =
+							event.kind == EventType.Individual
+								? allIndividuals
+								: event.kind == EventType.Team
+								? allTeams
+								: [];
+						const participantsOfEvent = participants.filter((p) =>
+							p.events_ids_entered.includes(event.id)
+						);
+
+						bigData.events.push({
+							id: bigData.events.length + 1,
+							event,
+							participants: participantsOfEvent,
+							results: result.results.map((r) => ({
+								participant: participants.filter((p) => p.id == r.participant_id),
+								position: r.position,
+								points: r.points
+							}))
+						});
+					} else {
+						alert("Data on disk no longer exists!");
+					}
+				} else {
+					alert("Failed to find event relating to current result!");
+				}
+			}
+
+			const generateTotaledScores = (participants: IndividualData[] | TeamData[]) =>
+				participants
+					.map((t) => {
+						const resultsTeamIn = allResults
+							.filter((r) => t.events_ids_entered.includes(r.event_id))
+							.map((r) => r.results.find((r) => r.participant_id == t.id));
+
+						const totalPoints = resultsTeamIn
+							.map((r) => r?.points)
+							.reduce((b: any, a: any) => (b || 0) + (a || 0), 0);
+
+						return {
+							participant: t,
+							points: totalPoints
+						};
+					})
+					.sort((a, b) => {
+						return +b.points - +a.points;
+					})
+					.map((t, index) => ({
+						...t,
+						position: index + 1
+					}));
+
+			bigData.results.teams = generateTotaledScores(allTeams);
+			bigData.results.individuals = generateTotaledScores(allIndividuals);
+
+			const generatedDate = new Date();
+
+			const generatedDirName = [
+				generatedDate.getFullYear(),
+				(generatedDate.getMonth() + 1).toString().padStart(2, "0"),
+				generatedDate.getDate().toString().padStart(2, "0"),
+				generatedDate.getHours().toString().padStart(2, "0"),
+				generatedDate.getMinutes().toString().padStart(2, "0"),
+				generatedDate.getSeconds().toString().padStart(2, "0")
+			].join("-");
+
+			bigData.generated_at = generatedDate.toISOString();
+
+			const home = await homeDir();
+			const dataDir = await resolve(
+				home,
+				".students_tournament",
+				"generated",
+				generatedDirName
+			);
+
+			await createDir(dataDir, { recursive: true });
+
+			const jsonFilePath = await resolve(dataDir, "generated.json");
+
+			await writeFile(jsonFilePath, JSON.stringify(bigData, null, 4));
+		} else {
+			alert(
+				"An error occurred while generating final results: mismatch between results events amount and all events amount."
+			);
+		}
+	};
+
 	return (
 		<div className={"finalise-app"}>
 			<div className={"finalise-create-app"}>
 				<Sidebar
 					title={() => `Events (${new Set(completedTabs).size}/${tabs.length - 2}) `}
+					exit={async (el: any) => {
+						const reply = await confirm(
+							"Are you sure you want to leave finalise mode? Your changes will NOT be saved.",
+							{ type: "warning" }
+						);
+
+						if (reply == true) {
+							store.results.call("reset_all").then((_) => {
+								navigate("/");
+							});
+						}
+					}}
+					exitProps={{}}
 					tabs={tabs}
 					state={[tabSelected, setTabSelected]}
 					classNames={{
@@ -173,7 +300,7 @@ export const AdminFinalise = (
 					cancel={() => {}}
 					cancelText={"Record the results for each event and mark them all as done."}
 					cancelProps={{ className: "btn", style: { marginInlineStart: "0.5rem" } }}
-					ok={() => {}}
+					ok={() => onFinalResultsClick()}
 					okText={"Create final results"}
 					okProps={{
 						className: "btn primary small",

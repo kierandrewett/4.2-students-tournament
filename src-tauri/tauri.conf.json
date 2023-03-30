@@ -26,8 +26,10 @@
             "fs": {
                 "all": false,
                 "exists": true,
+                "createDir": true,
+                "writeFile": true,
                 "scope": [
-                    "$HOME/.students_tournament/*"
+                    "$HOME/.students_tournament/**/*"
                 ]
             },
             "window": {
@@ -40,7 +42,8 @@
                 "unmaximize": true,
                 "unminimize": true,
                 "startDragging": true,
-                "setSize": true
+                "setSize": true,
+                "setMinSize": true
             }
         },
         "bundle": {

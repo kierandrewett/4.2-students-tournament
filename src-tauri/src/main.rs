@@ -93,6 +93,7 @@ fn main() {
             store::results::ipc::results__get_all_results,
             store::results::ipc::results__record_event_results,
             store::results::ipc::results__mark_event_done,
+            store::results::ipc::results__reset_all,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

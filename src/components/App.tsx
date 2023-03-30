@@ -19,7 +19,9 @@ const App = () => {
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
-		isStoreLocked().then((_) => navigate("/admin/finalise"));
+		isStoreLocked().then((locked) => {
+			locked && navigate("/admin/finalise");
+		});
 	});
 
 	return (

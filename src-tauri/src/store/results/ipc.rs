@@ -42,3 +42,11 @@ pub fn results__mark_event_done(
 ) -> Result<(), std::string::String> {
     stores.lock().unwrap().results.mark_event_done(event_id, done)
 }
+
+#[tauri::command]
+pub fn results__reset_all(
+    window: Window,
+    stores: State<'_, Arc<Mutex<AllStores>>>, 
+) -> Result<(), ()> {
+    stores.lock().unwrap().results.reset_all()
+}
