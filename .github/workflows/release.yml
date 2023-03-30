@@ -36,7 +36,7 @@ jobs:
                         repo: context.repo.repo,
                         tag_name: `v${process.env.PACKAGE_VERSION}-${process.env.SHORT_SHA}`,
                         name: `Students Tournament v${process.env.PACKAGE_VERSION} - ${process.env.CURR_DATE}`,
-                        body: `Students Tournament build ${process.env.CURR_DATE} ${process.env.SHORT_SHA}`,
+                        body: `Students Tournament build ${process.env.CURR_DATE} ${process.env.SHORT_SHA}\n\nWindows - https://github.com/EnderDev/4.2-students-tournament/releases/download/v${process.env.PACKAGE_VERSION}-${process.env.SHORT_SHA}/Students.Tournament_${process.env.PACKAGE_VERSION}_x64_en-US.msi\nmacOS - https://github.com/EnderDev/4.2-students-tournament/releases/download/v${process.env.PACKAGE_VERSION}-${process.env.SHORT_SHA}/Students.Tournament_${process.env.PACKAGE_VERSION}_x64.dmg\nDebian, Ubuntu - https://github.com/EnderDev/4.2-students-tournament/releases/download/v${process.env.PACKAGE_VERSION}-${process.env.SHORT_SHA}/Students.Tournament_${process.env.PACKAGE_VERSION}_amd64.deb\nLinux AppImage - https://github.com/EnderDev/4.2-students-tournament/releases/download/v${process.env.PACKAGE_VERSION}-${process.env.SHORT_SHA}/students-tournament_${process.env.PACKAGE_VERSION}_amd64.AppImage`,
                         draft: true,
                         prerelease: false
                       })
