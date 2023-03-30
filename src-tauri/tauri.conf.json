@@ -70,8 +70,8 @@
                 "resizable": true,
                 "title": "Students Tournament",
                 "width": 1100,
-                "minHeight": 600,
-                "minWidth": 700,
+                "minHeight": 720,
+                "minWidth": 1280,
                 "visible": false
             }
         ]
