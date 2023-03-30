@@ -26,3 +26,6 @@ registerKeybinds();
 
 // Expose the IPCStore to the window
 window.store = tmStore.store;
+
+// Disable context menus
+document.documentElement.addEventListener("contextmenu", (e) => e.preventDefault());

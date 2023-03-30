@@ -8,7 +8,7 @@ const Main = () => {
 		navigate("/intro");
 	});
 
-	return <h1>hello</h1>;
+	return <></>;
 };
 
 export default Main;
