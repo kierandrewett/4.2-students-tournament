@@ -1,3 +1,4 @@
+// PDF Icon
 export const PDFIcon = (rest: any) => {
 	return (
 		<svg

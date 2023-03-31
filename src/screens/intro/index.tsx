@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../store";
 import { EventData } from "../../types";
 
+// The main intro page, only shows the Start button and the Admin mode button
 const Intro = () => {
 	const navigate = useNavigate();
 

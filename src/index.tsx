@@ -27,7 +27,7 @@ registerKeybinds();
 // Expose the IPCStore to the window
 window.store = tmStore.store;
 
-// Disable context menus
+// Disable context menus, except for context menus on inputs
 document.documentElement.addEventListener("contextmenu", (e: any) => {
 	if ((e.target as HTMLElement).tagName !== "INPUT") {
 		e.preventDefault();

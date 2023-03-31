@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../store";
 import { EventData, EventType, IndividualData, TeamData } from "../../types.d";
 
+// Main dashboard for the admin mode
+// Lists all the requirements for entering finalise mode.
 export const AdminDashboard = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
 	const navigate = useNavigate();
 
+	// Stores state for all the teams, individuals and events.
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
 	const [allIndividuals, setAllIndividuals] = React.useState<IndividualData[]>([]);
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
@@ -50,6 +53,7 @@ export const AdminDashboard = (
 		window.addEventListener("blur", getAllPromises);
 	}, []);
 
+	// Gets all the events that have a max_teams value set, and checks if the number of teams participating is less than the max_teams value.
 	const getAllEventsWithMinimalNumbers = () => {
 		const errors = [];
 
@@ -73,6 +77,7 @@ export const AdminDashboard = (
 		return errors;
 	};
 
+	// Checks if the tournament is ready to be finalised.
 	const shouldShowRankingInfo = () => {
 		const totalTeamPlayers = (allTeams || [])
 			.map(
@@ -84,6 +89,7 @@ export const AdminDashboard = (
 		return [totalTeamPlayers, totalIndividuals];
 	};
 
+	// Finalises the tournament and locks the data store.
 	const finaliseTournament = () => {
 		invoke("lock_data").then((_) => {
 			navigate("/admin/finalise", { state: { key: "lock" } });

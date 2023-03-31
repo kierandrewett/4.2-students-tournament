@@ -1,3 +1,6 @@
+// General TypeScript type definitions
+// We will use these if we want more explicit and advanced types
+
 import * as tmStore from "./store";
 
 export declare global {

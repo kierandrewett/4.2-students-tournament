@@ -2,6 +2,7 @@ import autoAnimate from "@formkit/auto-animate";
 import React, { Dispatch, SetStateAction } from "react";
 import HeaderBar from "./HeaderBar";
 
+// Tab interface for the sidebar
 export interface Tab {
 	id: string;
 	name: string | (() => any);
@@ -9,6 +10,7 @@ export interface Tab {
 	disabled?: boolean;
 }
 
+// Used to render the tabs in the sidebar
 const Tabs = ({
 	list,
 	classNames,
@@ -49,6 +51,7 @@ const Tabs = ({
 	);
 };
 
+// Sidebar component
 const Sidebar = ({
 	title,
 	goBack,

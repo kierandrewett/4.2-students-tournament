@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../store";
 import { EventData, IndividualData } from "../../types.d";
 
+// This screen shows you all the registered individuals and allows you to delete them.
+// It also allows you to create a new individual, as well as editing their events.
 export const AdminIndividuals = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
 	const navigate = useNavigate();
 
+	// Stores state for all the individuals and events.
 	const [allIndividuals, setAllIndividuals] = React.useState<IndividualData[]>([]);
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
 

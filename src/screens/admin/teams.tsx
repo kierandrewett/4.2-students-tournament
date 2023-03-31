@@ -4,11 +4,14 @@ import { ChevronDownIcon } from "../../components/icons/ChevronDown";
 import { store } from "../../store";
 import { EventData, TeamData } from "../../types";
 
+// This screen is used to show you all the teams that have registered for the Students Tournament.
+// Options for listing each player in the team, and for deleting the team are also available.
 export const AdminTeams = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
 	const navigate = useNavigate();
 
+	// Stores state for all teams and events.
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
 
@@ -181,6 +184,7 @@ export const AdminTeams = (
 														<td className={"small button-horiz"}>
 															<button
 																className={"btn danger small"}
+																style={{ marginLeft: "auto" }}
 																onClick={(el: any) => {
 																	let int = setTimeout(() => {
 																		el.target.removeAttribute(

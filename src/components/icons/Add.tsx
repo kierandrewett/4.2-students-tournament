@@ -1,3 +1,4 @@
+// Add icon
 export const AddIcon = (rest: any) => {
 	return (
 		<svg

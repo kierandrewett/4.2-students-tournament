@@ -5,19 +5,14 @@ import { resolve } from "@tauri-apps/api/path";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Animate } from "react-simple-animate";
-import { utils, writeFileXLSX } from "xlsx";
+import { sleep } from ".";
 import HeaderBar from "../../../components/HeaderBar";
 import LoadingThrobber from "../../../components/LoadingThrobber";
 import { EventData, EventType, IndividualData, TeamData } from "../../../types.d";
 
-const sleep = (ms: number) => {
-	return new Promise((r) => {
-		setTimeout(() => {
-			r(true);
-		}, ms);
-	});
-};
-
+// Used to display the final results of the competition.
+// Ranks everyone based on total points and renders it into a table.
+// A cool animation is also displayed to show the 1st, 2nd and 3rd place winner.
 export const AdminFinaliseEnd = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -58,22 +53,10 @@ export const AdminFinaliseEnd = () => {
 
 			setDataDir(_dataDir);
 			sessionStorage.removeItem("latest_data_dir");
-		} else {
-			// alert(
-			// 	"Unable to find generated data directory. Are you sure you got here from finalise mode?"
-			// );
-			// navigate("/");
 		}
 	};
 
-	const getExcelSpreadsheet = () => {
-		console.log(data);
-
-		const ws = utils.json_to_sheet([]);
-		const wb = utils.book_new();
-		utils.book_append_sheet(wb, ws, "Students Tournament - Results");
-		writeFileXLSX(wb, "generated.xlsx");
-	};
+	const getExcelSpreadsheet = () => {};
 
 	React.useEffect(() => {
 		getGeneratedJSON();

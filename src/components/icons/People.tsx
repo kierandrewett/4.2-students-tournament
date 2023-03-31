@@ -1,3 +1,4 @@
+// People icon
 export const PeopleIcon = (rest: any) => {
 	return (
 		<svg

@@ -4,6 +4,8 @@ import { store } from "../store";
 import { EventData, EventType } from "../types.d";
 import { BackIcon } from "./icons/Back";
 
+// Complex multi select component
+// Used to move different events between two lists
 export const EventsSelector = ({
 	name,
 	userSelected,

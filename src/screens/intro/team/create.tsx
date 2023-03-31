@@ -7,9 +7,12 @@ import HeaderBar from "../../../components/HeaderBar";
 import { store } from "../../../store";
 import { EventType, TeamData } from "../../../types.d";
 
+// Teams create page, where you are presented with a team name input and a list of events to choose from
 const IntroTeamsCreate = () => {
 	const navigate = useNavigate();
 
+	// Using yup for validation in forms
+	//     name must be a string that is required and must be longer than 2 characters
 	const schema = yup.object().shape({
 		name: yup
 			.string()

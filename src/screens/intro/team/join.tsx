@@ -6,12 +6,17 @@ import HeaderBar from "../../../components/HeaderBar";
 import { store } from "../../../store";
 import { TeamData } from "../../../types";
 
+// This screen is used to join an existing team.
 const IntroTeamsJoin = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
 
+	// Using Yup to validate the form.
+	//	team_id - Team ID must be an integer and is required
+	//  _first_name - Forename must be a string and is required,
+	//  _last_name - Surname must be a string and is required
 	const schema = yup.object().shape({
 		team_id: yup.number().integer().required("Team is required."),
 		_first_name: yup

@@ -1,3 +1,4 @@
+// Back icon
 export const BackIcon = (rest: any) => {
 	return (
 		<svg

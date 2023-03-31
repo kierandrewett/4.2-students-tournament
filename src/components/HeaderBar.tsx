@@ -1,6 +1,8 @@
 import { BackIcon } from "./icons/Back";
 import { CloseIcon } from "./icons/Close";
 
+// Header bar component
+// Used to display a header bar with a title and buttons if needed
 const HeaderBar = ({
 	title,
 	cancel,

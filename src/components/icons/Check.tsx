@@ -1,3 +1,4 @@
+// Check Icon
 export const CheckIcon = (rest: any) => {
 	return (
 		<svg

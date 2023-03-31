@@ -5,9 +5,13 @@ import { EventsSelector } from "../../../components/EventsSelector";
 import { store } from "../../../store";
 import { EventType } from "../../../types.d";
 
+// This screen is used to create a new individual.
 const IntroIndividualSignup = () => {
 	const navigate = useNavigate();
 
+	// Using Yup to validate the form.
+	//   _first_name - Forename must be a string and is required,
+	//	 _last_name - Surname must be a string and is required
 	const schema = yup.object().shape({
 		_first_name: yup
 			.string()

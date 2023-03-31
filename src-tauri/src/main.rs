@@ -1,6 +1,7 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-#![feature(fn_traits)]
-#![allow(non_snake_case)]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // Hides the console window when not in debug mode on Windows
+#![feature(fn_traits)] // Enables the function traits feature
+#![allow(non_snake_case)] // Allows use of nonSnakeCase variables in Rust
+#![allow(dead_code)] // Allows use of dead code in Rust (unused functions, etc)
 
 use std::{thread::sleep, time::Duration, sync::{Arc, Mutex}, path::PathBuf, fs::{File, self, metadata}, io::Write, process::Command};
 
@@ -9,11 +10,7 @@ use tauri::{App, Manager, Window, Size, LogicalSize};
 
 mod store;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
+// Launches the developer tools when we are in a debug build environment.
 #[tauri::command]
 fn open_devtools(window: Window) {
     #[cfg(debug_assertions)]
@@ -22,6 +19,7 @@ fn open_devtools(window: Window) {
     }
 }
 
+// Locks the data store by creating a lock file that the data store checks for before writing to the data store.
 #[tauri::command]
 fn lock_data() {
     let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
@@ -31,6 +29,7 @@ fn lock_data() {
     lock_file.write_all(b"").expect("Failed to lock data.");
 }
 
+// Unlocks the data store by removing the lock file if it exists.
 #[tauri::command]
 fn unlock_data() {
     let lock_file_path = get_data_dir().join(PathBuf::from("data.lock"));
@@ -41,6 +40,11 @@ fn unlock_data() {
 }
 
 // https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169
+/* Tauri command for opening a folder in the OS's file explorer.
+    1. We use cfg target_os so the code only compiles on the target OS.
+    2. We use the Command struct to spawn the process.
+    3. We use the unwrap method to panic if the process fails to spawn. 
+*/
 #[tauri::command]
 fn open_folder(path: String) {
     #[cfg(target_os = "windows")]
@@ -114,7 +118,6 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![
-            greet,
             open_devtools,
             lock_data,
             unlock_data,
@@ -140,8 +143,6 @@ fn main() {
             store::results::ipc::results__record_event_results,
             store::results::ipc::results__mark_event_done,
             store::results::ipc::results__reset_all,
-            /* Reports */
-            store::reports::ipc::reports__create_xlsx_report,
         ])
         .setup(|app| Ok(setup_application(app)))
         .run(tauri::generate_context!())

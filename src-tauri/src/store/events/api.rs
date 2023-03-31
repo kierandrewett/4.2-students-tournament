@@ -9,11 +9,14 @@ pub struct EventsStore {
     pub store: Store<Wry>
 }
 
+// The EventsStore implementation
 impl EventsStore {
+    // Helper function for saving the store
     pub fn save(&mut self) -> () {
         self.store.save().expect("Failed to save EventsStore");
     }
 
+    // Inits the store and its default keys
     pub fn init(&mut self) -> () {
         if !self.store.has("events") {
             self.store.insert("events".to_string(), json!([]))
@@ -23,12 +26,14 @@ impl EventsStore {
         self.save();
     }
 
+    // Gets all the events from the store
     pub fn get_all_events(&mut self) -> Vec<JsonValue> {
         let all_events = &mut self.store.get("events").unwrap().as_array().cloned().unwrap();
 
         all_events.clone()
     }
 
+    // Finds an event using a predicate
     pub fn find_event_by<T: for<'a> FnMut(&'a &JsonValue) -> bool>(&mut self, mut predicate: T) -> Result<JsonValue, &str> {
         let all_events = self.get_all_events();
 
@@ -41,6 +46,7 @@ impl EventsStore {
         }
     }
 
+    // Finds an event using its ID
     pub fn get_event_by_id(&mut self, id: u64) -> Result<JsonValue, String> {
         match self.find_event_by(|x| x.get("id")
             .expect("Failed to get ID in get_event_by_id for iterator")
@@ -52,6 +58,7 @@ impl EventsStore {
         }
     }
 
+    // Creates a new event using a name, kind, max points, and max teams
     pub fn create_event(&mut self, name: &str, kind: EventType, max_points: u16, max_teams: Option<u16>) -> Result<Value, String> {
         let all_events = &mut self.get_all_events();
 
@@ -91,6 +98,7 @@ impl EventsStore {
         Ok(data)
     }
 
+    // Deletes an event using its ID
     pub fn delete_event(&mut self, id: u64) -> Result<(), String> {
         let all_events = &mut self.get_all_events().to_owned();
 

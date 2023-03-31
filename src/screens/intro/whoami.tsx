@@ -3,6 +3,7 @@ import HeaderBar from "../../components/HeaderBar";
 import { PeopleIcon } from "../../components/icons/People";
 import { PersonIcon } from "../../components/icons/Person";
 
+// The who am I page is the first page of the intro flow where it asks you who you will be entering as
 const IntroWhoAmI = () => {
 	const navigate = useNavigate();
 

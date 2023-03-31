@@ -1,3 +1,4 @@
+// Close icon
 export const CloseIcon = (rest: any) => {
 	return (
 		<svg
