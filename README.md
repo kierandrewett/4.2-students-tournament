@@ -26,8 +26,8 @@ This message only appears because we have not signed the binary using a security
 1. Click "More info" when the message box appears
 2. Click "Run anyway" when it appears.
 
-![Group 1](https://user-images.githubusercontent.com/42723993/228990849-66e5bc83-0c0b-44e4-8741-416244d1ee50.png)
-![Group 2](https://user-images.githubusercontent.com/42723993/228990853-d6f7ca03-a296-4e7d-b1f5-0d0101b72f97.png)
+<img src="https://user-images.githubusercontent.com/42723993/228990849-66e5bc83-0c0b-44e4-8741-416244d1ee50.png" width="300">
+<img src="https://user-images.githubusercontent.com/42723993/228990853-d6f7ca03-a296-4e7d-b1f5-0d0101b72f97.png" width="500">
 
 If you're skeptical that this open-source application is in fact a virus, consider running the installer executable through something such as [VirusTotal](https://virustotal.com).
 
