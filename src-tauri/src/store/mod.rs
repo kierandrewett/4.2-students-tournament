@@ -13,8 +13,8 @@ pub mod events;
 pub mod individuals;
 pub mod teams;
 pub mod results;
-pub mod reports;
 
+// Helper function for getting the data directory for the apps config files
 pub fn get_data_dir() -> PathBuf {
     home_dir().expect("Failed to find home directory")
         .join(PathBuf::from(".students_tournament"))
@@ -88,7 +88,7 @@ fn init_results_store(application: &App) -> Store<Wry> {
     store
 }
 
-
+// Helper function to check if the data lock exists.
 pub fn is_data_locked() -> bool {
     let lock_file = get_data_dir().join(PathBuf::from("data.lock"));
 
@@ -102,6 +102,9 @@ pub struct AllStores {
     pub results: ResultsStore
 }
 
+// Initialises all the data stores in the application and creates a struct instance to hold them.
+// Each init_x_store function will load the data from the disk and deserialise it into a API-understandable format.
+// The stores are then stored into a main struct called AllStores.
 pub fn init(application: &App) -> AllStores {
     let mut events = EventsStore { store: init_events_store(application) };
     let mut teams = TeamsStore { store: init_teams_store(application) };

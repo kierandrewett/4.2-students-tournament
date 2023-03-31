@@ -4,9 +4,12 @@ import { CreateEventModal } from "../../modals/events/create";
 import { store } from "../../store";
 import { EventData, EventType, IndividualData, TeamData } from "../../types.d";
 
+// This screen is used to show you all the events that have been created.
+// Options to delete events exist, but you will be warned that you need to delete the teams and individuals before deleting the event.
 export const AdminEvents = (
 	rest: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ) => {
+	// Stores state for all events, individuals and teams.
 	const [allEvents, setAllEvents] = React.useState<EventData[]>([]);
 	const [allIndividuals, setAllIndividuals] = React.useState<IndividualData[]>([]);
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);

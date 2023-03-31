@@ -1,3 +1,4 @@
+// XLSX icon (spreadsheet)
 export const XLSXIcon = (rest: any) => {
 	return (
 		<svg

@@ -5,17 +5,25 @@ import HeaderBar from "../../components/HeaderBar";
 import { store } from "../../store";
 import { EventType } from "../../types.d";
 
+// This modal is used to create a new event.
+// Used in the admin mode when creating events.
 export const CreateEventModal = ({
 	state
 }: {
 	state: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }) => {
+	// Keeps track of the state of the modal.
 	const [open, setOpen] = state;
 
 	function closeModal() {
 		setOpen(false);
 	}
 
+	// Using Yup to validate the form.
+	//    name - Event name is a required string with a minimum length of 4.
+	//    kind - Event kind is a required string with a value of either "Individual" or "Team".
+	//    maxPoints - Max points is a required number with a minimum value of 1.
+	//    maxTeams - Max teams is an optional number with a minimum value of 2, if max teams is null then it is considered unlimited.
 	const schema = yup.object().shape({
 		name: yup
 			.string()

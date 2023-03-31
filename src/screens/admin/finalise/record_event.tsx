@@ -13,6 +13,8 @@ type RSIProps = {
 	items: TeamData[] | IndividualData[];
 };
 
+// Ranking sort item component
+// Used to render each item in the table
 const RankingsSortItem = SortableElement<RSIProps>(({ event, value, i, items }: RSIProps) => {
 	const [points, setPoints] = React.useState<any>("");
 
@@ -68,6 +70,8 @@ const RankingsSortItem = SortableElement<RSIProps>(({ event, value, i, items }: 
 
 type RSCProps = { event: EventData; items: TeamData[] | IndividualData[]; isDone: boolean };
 
+// Ranking sort container component
+// Used to render the whole table
 const RankingsSortContainer = SortableContainer<RSCProps>(({ event, items, isDone }: RSCProps) => {
 	return (
 		<div
@@ -92,6 +96,9 @@ const RankingsSortContainer = SortableContainer<RSCProps>(({ event, items, isDon
 	);
 });
 
+// Record event results component
+// Includes complex sidebars and header bars to keep track of progress when recording
+// Ability to mark each event as done is handy as it allows the user to go back and edit and track what has been done
 const Rankings = ({
 	participants,
 	setParticipants,

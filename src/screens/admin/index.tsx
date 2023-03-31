@@ -7,6 +7,7 @@ import { AdminEvents } from "./events";
 import { AdminIndividuals } from "./individuals";
 import { AdminTeams } from "./teams";
 
+// Register all the tabs in the admin mode.
 const tabs = [
 	{
 		id: "dashboard",
@@ -30,8 +31,11 @@ const tabs = [
 	}
 ];
 
+// Wraps all the other admin screens in a sidebar.
 const AdminMain = () => {
 	const navigate = useNavigate();
+
+	// Store the current tab in the state.
 	const [currentTab, setCurrentTab] = React.useState<string>(tabs[0].id);
 
 	return (

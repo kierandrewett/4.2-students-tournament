@@ -3,6 +3,7 @@ import HeaderBar from "../../../components/HeaderBar";
 import { AddIcon } from "../../../components/icons/Add";
 import { AddPersonIcon } from "../../../components/icons/AddPerson";
 
+// This screen is used to determine if the user is joining an existing team or creating a new team.
 const IntroTeam = () => {
 	const navigate = useNavigate();
 

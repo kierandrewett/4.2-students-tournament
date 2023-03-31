@@ -17,6 +17,9 @@ import IntroTeamsJoin from "../screens/intro/team/join";
 import IntroWhoAmI from "../screens/intro/whoami";
 import { isStoreLocked } from "../store";
 
+// Main App component
+// Router is used to register each screen with a unique URI.
+// Allows for easy navigation between screens.
 const App = () => {
 	const navigate = useNavigate();
 

@@ -5,6 +5,7 @@ import Sidebar, { Tab } from "../../../components/Sidebar";
 import { store } from "../../../store";
 import { IndividualData } from "../../../types.d";
 
+// Wraps all the other individual screens in a sidebar.
 const IntroIndividual = () => {
 	const location = useLocation();
 

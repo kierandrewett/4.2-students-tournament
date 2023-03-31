@@ -16,11 +16,14 @@ pub struct ResultsStore {
     pub store: Store<Wry>
 }
 
+// The ResultsStore implementation
 impl ResultsStore {
+    // Helper function for saving the store
     pub fn save(&mut self) -> () {
         self.store.save().expect("Failed to save ResultsStore");
     }
 
+    // Inits the store and its default keys
     pub fn init(&mut self) -> () {
         if !self.store.has("results") {
             self.store.insert("results".to_string(), json!([]))
@@ -30,12 +33,14 @@ impl ResultsStore {
         self.save();
     }
 
+    // Gets all the results from the store
     pub fn get_all_results(&mut self) -> Vec<JsonValue> {
         let all_results = &mut self.store.get("results").unwrap().as_array().cloned().unwrap();
 
         all_results.clone()
     }
 
+    // Finds a result using a predicate
     pub fn find_result_by<T: for<'a> FnMut(&'a &JsonValue) -> bool>(&mut self, mut predicate: T) -> Result<JsonValue, &str> {
         let all_results = self.get_all_results();
 
@@ -48,6 +53,7 @@ impl ResultsStore {
         }
     }
 
+    // Finds a result using a predicate and returns the index
     pub fn find_result_index_by<T: for<'a> FnMut(&'a JsonValue) -> bool>(&mut self, predicate: T) -> Result<usize, &str> {
         let all_results = &mut self.get_all_results();
 
@@ -60,6 +66,7 @@ impl ResultsStore {
         }
     }
 
+    // Gets a result by its event ID
     pub fn get_result_by_event_id(&mut self, id: u64) -> Result<JsonValue, String> {
         match self.find_result_by(|x| x.get("event_id")
             .expect("Failed to get event ID in get_result_by_event_id for iterator")
@@ -71,6 +78,7 @@ impl ResultsStore {
         }
     }
 
+    // Record an event's results
     pub fn record_event_results(&mut self, event_id: u64, results: Vec<ResultsItem>) -> Result<JsonValue, String> {
         let all_results = &mut self.get_all_results();
 
@@ -123,6 +131,7 @@ impl ResultsStore {
             .expect("Failed to serialise new result data"))
     }
 
+    // Mark an event as done
     pub fn mark_event_done(&mut self, event_id: u64, done: bool) -> Result<(), String> {
         let all_results = &mut self.get_all_results();
 
@@ -159,6 +168,7 @@ impl ResultsStore {
         Ok(())
     }
 
+    // Nukes the whole results store
     pub fn reset_all(&mut self) -> Result<(), ()> {
         let _ = &self.store.insert("results".to_string(), serde_json::Value::Array(vec![]));
 

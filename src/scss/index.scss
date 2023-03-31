@@ -1,3 +1,8 @@
+// The main styles root
+
+// We will import all the styles we need from other .scss files in the src/scss folder.
+// This allows us to only need to load a single .css file when the application starts
+
 @import "reset";
 
 @import "themes/light";

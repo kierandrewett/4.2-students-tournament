@@ -12,7 +12,10 @@ import { store } from "../../../store";
 import { EventData, EventType, IndividualData, ResultData, TeamData } from "../../../types.d";
 import { AdminFinaliseRecordEvent } from "./record_event";
 
-const sleep = (ms: number) => {
+// Sleep function as a promise
+// Used to introduce arbitrary delays in async functions to make it feel like something is actually happening...
+// ...when the computing power of most devices is fast enough to do our complex calculations 😈
+export const sleep = (ms: number) => {
 	return new Promise((r) => {
 		setTimeout(() => {
 			r(true);

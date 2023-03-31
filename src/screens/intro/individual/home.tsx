@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../../store";
 import { IndividualData } from "../../../types";
 
+// This screen is used to introduce you to the individuals screen, with a sidebar showing all the registered individuals.
 const IntroIndividualHome = () => {
 	const navigate = useNavigate();
 

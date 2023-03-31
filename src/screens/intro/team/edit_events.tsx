@@ -7,12 +7,15 @@ import HeaderBar from "../../../components/HeaderBar";
 import { store } from "../../../store";
 import { EventType, TeamData } from "../../../types.d";
 
+// Screen used to edit a team's events
 const IntroTeamsEditEvents = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const [allTeams, setAllTeams] = React.useState<TeamData[]>([]);
 
+	// Using yup for form validation
+	//    team_id must be a number that is an integer and is required
 	const schema = yup.object().shape({
 		team_id: yup.number().integer().required("Team is required.")
 	});

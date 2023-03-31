@@ -1,3 +1,6 @@
+// A light mode theme
+// @todo: we could add a dark mode at some point?
+
 :root:not(.light),
 :root.light {
 	--base-background: rgb(255, 255, 255);

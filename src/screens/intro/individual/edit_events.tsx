@@ -6,12 +6,15 @@ import { EventsSelector } from "../../../components/EventsSelector";
 import { store } from "../../../store";
 import { EventType, IndividualData, TeamData } from "../../../types.d";
 
+// This screen is used to edit the events of an individual.
 const IntroIndividualEditEvents = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const [allIndividuals, setAllIndividuals] = React.useState<IndividualData[]>([]);
 
+	// Using Yup to validate the form.
+	//     individual_id - Individual is a required integer.
 	const schema = yup.object().shape({
 		individual_id: yup.number().integer().required("Individual is required.")
 	});

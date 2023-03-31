@@ -7,11 +7,14 @@ pub struct IndividualsStore {
     pub store: Store<Wry>
 }
 
+// The IndividualsStore implementation
 impl IndividualsStore {
+    // Helper function for saving the store
     pub fn save(&mut self) -> () {
         self.store.save().expect("Failed to save IndividualsStore");
     }
 
+    // Inits the store and its default keys
     pub fn init(&mut self) -> () {
         if !self.store.has("individuals") {
             self.store.insert("individuals".to_string(), json!([]))
@@ -21,12 +24,14 @@ impl IndividualsStore {
         self.save();
     }
 
+    // Gets all the individuals from the store
     pub fn get_all_individuals(&mut self) -> Vec<JsonValue> {
         let all_individuals = &mut self.store.get("individuals").unwrap().as_array().cloned().unwrap();
 
         all_individuals.clone()
     }
 
+    // Finds an individual using a predicate
     pub fn find_individual_by<T: for<'a> FnMut(&'a &JsonValue) -> bool>(&mut self, mut predicate: T) -> Result<JsonValue, &str> {
         let all_individuals = self.get_all_individuals();
 
@@ -39,6 +44,7 @@ impl IndividualsStore {
         }
     }
 
+    // Finds an individual's index in the vector using a predicate
     pub fn find_individual_index_by<T: for<'a> FnMut(&'a JsonValue) -> bool>(&mut self, predicate: T) -> Result<usize, &str> {
         let all_individuals = self.get_all_individuals();
 
@@ -51,6 +57,7 @@ impl IndividualsStore {
         }
     }
 
+    // Gets an individual by their ID
     pub fn get_individual_by_id(&mut self, id: u64) -> Result<JsonValue, String> {
         match self.find_individual_by(|x| x.get("id")
             .expect("Failed to get ID in get_individual_by_id for iterator")
@@ -62,11 +69,13 @@ impl IndividualsStore {
         }
     }
 
+    // Gets an individual by their name and events they've entered
     pub fn create_individual(&mut self, name: &str, events_ids_entered: Vec<u64>) -> Result<Value, String> {
         let all_individuals = &mut self.get_all_individuals();
 
+        // Check in the backend if we have exceeded 20 individuals.
         if all_individuals.len() >= 20 {
-            return Err("Cannot create any more teams. Maximum of 20 teams reached.".to_string())
+            return Err("Cannot create any more individuals. Maximum of 20 individuals reached.".to_string())
         }
 
         let data = json!({
@@ -84,6 +93,7 @@ impl IndividualsStore {
         Ok(data)
     }
 
+    // Deletes an individual by their ID
     pub fn delete_individual(&mut self, id: u64) -> Result<(), String> {
         let all_individuals = &mut self.get_all_individuals().to_owned();
 
@@ -114,6 +124,7 @@ impl IndividualsStore {
         Ok(())
     }
 
+    // Edits an individual's events they've entered
     pub fn edit_events(&mut self, id: u64, events_ids_entered: Vec<u64>) -> Result<(), std::string::String> {
         let all_individuals = &mut self.get_all_individuals();
 
