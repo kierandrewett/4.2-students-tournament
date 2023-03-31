@@ -99,7 +99,7 @@ fn setup_application(application: &mut App) {
 
         if stores.lock().unwrap().events.get_all_events().len() == 0 {
             window.eval("alert(
-                'Some essential information is missing. Participants will not be able to enter information at this time.'
+                'There are currently no events. Participants will not be able to enter information at this time.'
             );").expect("Failed to open alert");
         }
     });
