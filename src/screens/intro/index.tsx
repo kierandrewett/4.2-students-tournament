@@ -57,7 +57,7 @@ const Intro = () => {
 						Admin Mode
 					</button>
 					{ready && !allEvents.length ? (
-						<small>Some information is missing! Complete setup in admin mode.</small>
+						<small>There are currently no events! Complete setup in admin mode.</small>
 					) : null}
 				</div>
 			</div>
