@@ -221,9 +221,10 @@ export const AdminEvents = (
 																	? "Individual"
 																	: "Team"}
 															</td>
-															<td className={"small button-horiz"}>
+															<td className={"small"}>
 																<button
 																	className={"btn danger small"}
+																	style={{ marginLeft: "auto" }}
 																	onClick={(el: any) => {
 																		let int = setTimeout(() => {
 																			el.target.removeAttribute(
